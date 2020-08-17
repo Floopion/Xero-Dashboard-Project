@@ -6,6 +6,10 @@
     <title>@ViewData["Title"] - XeroNetStandardApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- adding reference script to react -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 </head>
 <body>
     <header>
@@ -32,6 +36,10 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+
+            <!-- entry point for react, anything react current being rendered to 'content' -->
+            <div id = "content" />
+            <script src="../dist/hello.js"></script> <!-- Call the jsx babel compiled react component -->
         </main>
     </div>
 
