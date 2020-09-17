@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService'
+import {CCard, CCardBody, CCardGroup, CCardHeader} from '@coreui/react'
+import {CChartDoughnut, CChartLine} from '@coreui/react-chartjs'
+
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
@@ -39,15 +42,64 @@ export class FetchData extends Component {
   }
 
   render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
-
     return (
-      <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
+        <div>
+        <CCardGroup columns className = "cols-2" >
+        <CCard>
+        <CCardHeader>
+          Doughnut Chart
+        </CCardHeader>
+        <CCardBody>
+          <CChartDoughnut
+            datasets={[
+              {
+                backgroundColor: [
+                  '#41B883',
+                  '#E46651',
+                  '#00D8FF',
+                  '#DD1B16'
+                ],
+                data: [40, 20, 80, 10]
+              }
+            ]}
+            labels={['VueJs', 'EmberJs', 'ReactJs', 'AngularJs']}
+            options={{
+              tooltips: {
+                enabled: true
+              }
+            }}
+          />
+        </CCardBody>
+        </CCard>
+
+        <CCard>
+        <CCardHeader>
+          Line Chart
+        </CCardHeader>
+        <CCardBody>
+          <CChartLine
+            datasets={[
+              {
+                label: 'Data One',
+                backgroundColor: 'rgb(228,102,81,0.9)',
+                data: [30, 39, 10, 50, 30, 70, 35]
+              },
+              {
+                label: 'Data Two',
+                backgroundColor: 'rgb(0,216,255,0.9)',
+                data: [39, 80, 40, 35, 40, 20, 45]
+              }
+            ]}
+            options={{
+              tooltips: {
+                enabled: true
+              }
+            }}
+            labels="months"
+          />
+        </CCardBody>
+      </CCard>
+      </CCardGroup>
       </div>
     );
   }
