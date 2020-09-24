@@ -11,6 +11,7 @@ using XeroApplication.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Xero.NetStandard.OAuth2.Config;
 
 namespace XeroApplication
 {
@@ -47,6 +48,16 @@ namespace XeroApplication
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+
+
+            //xero configurations
+            services.AddControllersWithViews();
+            services.Configure<XeroConfiguration>(Configuration.GetSection("XeroConfiguration"));
+            services.AddHttpClient();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

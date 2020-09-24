@@ -10,11 +10,20 @@ export class FetchData extends Component {
   constructor(props) {
     super(props);
     this.state = { forecasts: [], loading: true };
+    this.XeroAuthSend = this.XeroAuthSend.bind(this);
+    this.counter = 0
   }
 
   componentDidMount() {
     this.populateWeatherData();
   }
+
+  XeroAuthSend() {
+    // THIS METHOD NEED TO CALL AUTHORIZATIONCONTROLLER.CS - "INDEX"
+    this.counter += 1 
+    console.log(this.counter)
+  }
+
 
   static renderForecastsTable(forecasts) {
     return (
@@ -44,7 +53,7 @@ export class FetchData extends Component {
   render() {
     return (
         <div>
-
+          <button onClick={this.XeroAuthSend}>Xero Connect</button>
           <CCardGroup>
             <CCard>
               <CCardHeader>
@@ -160,4 +169,5 @@ export class FetchData extends Component {
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
   }
+
 }
