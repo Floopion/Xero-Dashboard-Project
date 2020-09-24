@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService'
+import {CCard, CCardBody, CCardGroup, CCardHeader} from '@coreui/react'
+import {CChartDoughnut, CChartLine, CChartRadar} from '@coreui/react-chartjs'
+
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
@@ -39,15 +42,112 @@ export class FetchData extends Component {
   }
 
   render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
-
     return (
-      <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
+        <div>
+
+          <CCardGroup>
+            <CCard>
+              <CCardHeader>
+                Line Chart
+              </CCardHeader>
+              <CCardBody>
+                <CChartLine
+                  datasets={[
+                    {
+                      label: 'Data One',
+                      backgroundColor: 'rgb(228,102,81,0.9)',
+                      data: [30, 39, 10, 50, 30, 70, 35]
+                    },
+                    {
+                      label: 'Data Two',
+                      backgroundColor: 'rgb(0,216,255,0.9)',
+                      data: [39, 80, 40, 35, 40, 20, 45]
+                    }
+                  ]}
+                  options={{
+                    tooltips: {
+                      enabled: true
+                    }
+                  }}
+                  labels="months"
+                />
+              </CCardBody>
+            </CCard>
+          </CCardGroup>
+
+          <CCardGroup columns className="cols-2">
+          
+          <CCard>
+            <CCardHeader>
+              Doughnut Chart
+            </CCardHeader>
+            <CCardBody>
+              <CChartDoughnut
+                datasets={[
+                  {
+                    backgroundColor: [
+                      '#41B883',
+                      '#E46651',
+                      '#00D8FF',
+                      '#DD1B16'
+                    ],
+                    data: [40, 20, 80, 10]
+                  }
+                ]}
+                labels={['VueJs', 'EmberJs', 'ReactJs', 'AngularJs']}
+                options={{
+                  tooltips: {
+                    enabled: true
+                  }
+                }}
+              />
+            </CCardBody>
+          </CCard>
+
+          <CCard>
+            <CCardHeader>
+              Radar Chart
+            </CCardHeader>
+            <CCardBody>
+              <CChartRadar
+                datasets={[
+                  {
+                    label: '2019',
+                    backgroundColor: 'rgba(179,181,198,0.2)',
+                    borderColor: 'rgba(179,181,198,1)',
+                    pointBackgroundColor: 'rgba(179,181,198,1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(179,181,198,1)',
+                    tooltipLabelColor: 'rgba(179,181,198,1)',
+                    data: [65, 59, 90, 81, 56, 55, 40]
+                  },
+                  {
+                    label: '2020',
+                    backgroundColor: 'rgba(255,99,132,0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    pointBackgroundColor: 'rgba(255,99,132,1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(255,99,132,1)',
+                    tooltipLabelColor: 'rgba(255,99,132,1)',
+                    data: [28, 48, 40, 19, 96, 27, 100]
+                  }
+                ]}
+                options={{
+                  aspectRatio: 1.5,
+                  tooltips: {
+                    enabled: true
+                  }
+                }}
+                labels={[
+                  'Eating', 'Drinking', 'Sleeping', 'Designing',
+                  'Coding', 'Cycling', 'Running'
+                ]}
+              />
+            </CCardBody>
+            </CCard>
+        </CCardGroup>
       </div>
     );
   }

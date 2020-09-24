@@ -51,7 +51,7 @@ export class Login extends Component {
         } else {
             switch (action) {
                 case LoginActions.Login:
-                    return (<div>Processing login</div>);
+                    return (<div className="loginLoading" className="Container">Processing login</div>);
                 case LoginActions.LoginCallback:
                     return (<div>Processing login callback</div>);
                 case LoginActions.Profile:
