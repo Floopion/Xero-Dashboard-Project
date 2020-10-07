@@ -10,7 +10,7 @@ namespace XeroApplication.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("xerotest")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
