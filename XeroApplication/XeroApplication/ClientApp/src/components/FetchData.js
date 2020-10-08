@@ -31,11 +31,13 @@ static renderForecastsTable(forecasts) {
           <tr>
             <th>String</th>
             <th>Summary</th>
+            <th>URL Link</th>
           </tr>
         </thead>
         <tbody>
         <td>{forecasts.date}</td>
         <td>{forecasts.name}</td>
+        <td>{forecasts.link}</td>
         </tbody>
       </table>
     );

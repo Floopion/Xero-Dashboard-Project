@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using XeroApplication.Models;
 
+
 namespace XeroApplication.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
             bool firstTimeConnection = false;

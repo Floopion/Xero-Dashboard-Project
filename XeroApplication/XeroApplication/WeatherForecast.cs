@@ -5,7 +5,9 @@ namespace XeroApplication
     public class WeatherForecast
     {
         public DateTime Date { get; set; }
-         public string Name { get; set; }
+        public string Name { get; set; }
+
+        public string link { get; set; } 
 
         // public int TemperatureC { get; set; }
 

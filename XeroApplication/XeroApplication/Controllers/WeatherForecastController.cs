@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 
 namespace XeroApplication.Controllers
@@ -14,6 +15,14 @@ namespace XeroApplication.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        // private IConfiguration _configuration;
+
+        // public WeatherForecastController(IConfiguration Configuration) {
+        //      _configuration = Configuration;
+        //  }
+
+        private IDesignTimeMvcBuilderConfiguration _confiuration;
+
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -31,7 +40,8 @@ namespace XeroApplication.Controllers
         {
             WeatherForecast weather = new WeatherForecast();
             weather.Date = DateTime.Now.AddDays(1);
-            weather.Name = "TESTING";
+            weather.Name = "Testing api call";
+            weather.link = "https://login.xero.com/identity/connect/authorize?response_type=code&client_id=9D49BD8A6A61429E98270B90FD3A5FFE&redirect_uri=https://localhost:5001/&scope=openid profile email accounting.transactions";
             return weather;            
 
             // var rng = new Random();
