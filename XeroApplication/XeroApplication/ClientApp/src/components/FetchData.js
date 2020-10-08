@@ -24,36 +24,56 @@ export class FetchData extends Component {
     console.log(this.counter)
   }
 
-
-  static renderForecastsTable(forecasts) {
+static renderForecastsTable(forecasts) {
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>String</th>
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
-            </tr>
-          )}
+        <td>{forecasts.date}</td>
+        <td>{forecasts.summary}</td>
         </tbody>
       </table>
     );
   }
 
+  // static renderForecastsTable(forecasts) {
+  //   return (
+  //     <table className='table table-striped' aria-labelledby="tabelLabel">
+  //       <thead>
+  //         <tr>
+  //           <th>Date</th>
+  //           <th>Temp. (C)</th>
+  //           <th>Temp. (F)</th>
+  //           <th>Summary</th>
+  //         </tr>
+  //       </thead>
+        // <tbody>
+        //   {forecasts.map(forecast =>
+        //     <tr key={forecast.date}>
+        //       <td>{forecast.date}</td>
+        //       <td>{forecast.temperatureC}</td>
+        //       <td>{forecast.temperatureF}</td>
+        //       <td>{forecast.summary}</td>
+        //     </tr>
+        //   )}
+        // </tbody>
+  //     </table>
+  //   );
+  // }
+
+  
+
   render() {
+    let contents = this.state.loading ? <p><em>Loading...</em></p> : FetchData.renderForecastsTable(this.state.forecasts);
     return (
         <div>
           <button onClick={this.XeroAuthSend}>Xero Connect</button>
+
+          <p>{contents}</p>
           <CCardGroup>
             <CCard>
               <CCardHeader>
@@ -160,6 +180,16 @@ export class FetchData extends Component {
       </div>
     );
   }
+
+  // async populateWeatherData() {
+  //   // const token = await authService.getAccessToken();
+  //   // const response = await fetch('weatherforecast', {
+  //   //   headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+  //   // });
+  //   const data =  await fetch('weatherforecast');
+  //   this.setState({ forecasts: data, loading: false });
+  // }
+
 
   async populateWeatherData() {
     const token = await authService.getAccessToken();
