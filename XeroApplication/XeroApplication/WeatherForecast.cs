@@ -7,7 +7,7 @@ namespace XeroApplication
         public DateTime Date { get; set; }
         public string Name { get; set; }
 
-        public string link { get; set; } 
+        public string Link { get; set; } 
 
         // public int TemperatureC { get; set; }
 

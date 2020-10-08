@@ -18,10 +18,10 @@ export class FetchData extends Component {
     this.populateWeatherData();
   }
 
-  XeroAuthSend() {
+  XeroAuthSend(forecasts) {
     // THIS METHOD NEED TO CALL AUTHORIZATIONCONTROLLER.CS - "INDEX"
-    this.counter += 1 
-    console.log(this.counter)
+    console.log(this.state.forecasts.link);
+    window.location.href = this.state.forecasts.link;
   }
 
 static renderForecastsTable(forecasts) {

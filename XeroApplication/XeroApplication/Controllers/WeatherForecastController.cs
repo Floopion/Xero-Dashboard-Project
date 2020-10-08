@@ -41,7 +41,7 @@ namespace XeroApplication.Controllers
             WeatherForecast weather = new WeatherForecast();
             weather.Date = DateTime.Now.AddDays(1);
             weather.Name = "Testing api call";
-            weather.link = "https://login.xero.com/identity/connect/authorize?response_type=code&client_id=9D49BD8A6A61429E98270B90FD3A5FFE&redirect_uri=https://localhost:5001/&scope=openid profile email accounting.transactions";
+            weather.Link = "https://login.xero.com/identity/connect/authorize?response_type=code&client_id=9D49BD8A6A61429E98270B90FD3A5FFE&redirect_uri=https://localhost:5001&scope=openid profile email accounting.transactions";
             return weather;            
 
             // var rng = new Random();
