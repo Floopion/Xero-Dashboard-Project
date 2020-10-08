@@ -30,11 +30,12 @@ static renderForecastsTable(forecasts) {
         <thead>
           <tr>
             <th>String</th>
+            <th>Summary</th>
           </tr>
         </thead>
         <tbody>
         <td>{forecasts.date}</td>
-        <td>{forecasts.summary}</td>
+        <td>{forecasts.name}</td>
         </tbody>
       </table>
     );

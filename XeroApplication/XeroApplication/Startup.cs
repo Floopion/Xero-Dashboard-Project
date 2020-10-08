@@ -54,10 +54,18 @@ namespace XeroApplication
             //xero configurations
             services.AddControllersWithViews();
             services.Configure<XeroConfiguration>(Configuration.GetSection("XeroConfiguration"));
-            services.AddHttpClient();
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddMvc(options => options.EnableEndpointRouting = false);
+
+            services.AddHttpClient("XeroResponseCode", c => 
+            {
+                c.BaseAddress = new System.Uri("https://login.xero.com/identity/connect/authorize?");
+                c.DefaultRequestHeaders.Add("response_type", "code");
+                c.DefaultRequestHeaders.Add("client_id ", "9D49BD8A6A61429E98270B90FD3A5FFE");
+                c.DefaultRequestHeaders.Add("scope", "offline_access accounting.transactions");
+                c.DefaultRequestHeaders.Add("redirect_uri ", "https://localhost:5001/Authorization/Callback");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

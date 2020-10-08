@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+
 namespace XeroApplication.Controllers
 {
     [Authorize]
@@ -28,11 +29,10 @@ namespace XeroApplication.Controllers
         [HttpGet]
         public WeatherForecast Get()
         {
-            WeatherForecast temp = new WeatherForecast();
-            temp.Date = DateTime.Now.AddDays(1);
-            temp.Summary = "TESTING";
-            return temp;
-            
+            WeatherForecast weather = new WeatherForecast();
+            weather.Date = DateTime.Now.AddDays(1);
+            weather.Name = "TESTING";
+            return weather;            
 
             // var rng = new Random();
             // return Enumerable.Range(0, 1).Select(index => new WeatherForecast
