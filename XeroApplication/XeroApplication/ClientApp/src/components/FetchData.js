@@ -11,60 +11,98 @@ export class FetchData extends Component {
     super(props);
     this.state = { forecasts: [], loading: true };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
+    //this.newLink = { authorize: [], loadingLink: true };
     this.counter = 0
   }
 
   componentDidMount() {
     this.populateWeatherData();
-
-    var currentLink = window.location.href;
     
-      if (currentLink != 'https://localhost:5001/fetch-data')
-      {
-      var split = currentLink.split('&')
-      var urlsplit = split[0].split('?');
+    var auth = this.CheckURLReturn();
+    if (auth.loaded == true)
+    {
+      console.log(auth.loaded)
+      this.AuthTokenRequest(auth);
+    }
+    else{
+      console.log(auth.loaded)
+    }
+  }
+  
 
-      var url = urlsplit[0];
-      var code = urlsplit[1].split('=')[1];
-      var scope = split[1].split('=')[1];
-      var session_state = split[2].split('=')[1];
+  CheckURLReturn()
+  {
+    var currentLink = window.location.href;
 
-      var tempArray = split;
-      var newLink = {
-        name: currentLink,
-        redirect_url: url,
-        response_type: code,
-        scopes: scope,
-        session_state: session_state
+    if (currentLink != 'https://localhost:5001/fetch-data')
+    {
+        var split = currentLink.split('&')
+        var urlsplit = split[0].split('?');
 
+        var url = urlsplit[0];
+        var code = urlsplit[1].split('=')[1];
+        var scope = split[1].split('=')[1];
+        var session_state = split[2].split('=')[1];
+        
+        var newLink = {
+          fullLink: currentLink,
+          redirect_url: url,
+          response_type: code,
+          scopes: scope,
+          session_state: session_state,
+          loaded: true
+        }
+
+        return newLink;
+    }
+    else {
+      newLink = {
+        loaded: false
       }
-      console.log(newLink);
-      console.log(JSON.stringify(newLink));
+
+      return newLink;
     }
   }
 
+  AuthTokenRequest(authorize)
+  {
+    console.log(authorize);
+    //console.log(JSON.stringify(authorize));
+
+    var clientID = "9D49BD8A6A61429E98270B90FD3A5FFE";
+    var clientSecret = "3f7I4q1Cty0GVbNa0AXojA206lcQfbGzn3prBFAQxbfHs5GC";
+    var encoded = btoa(clientID + ":" + clientSecret)   //btoa encode base64
+
+    //console.log(encoded);
+
+    fetch('https://identity.xero.com/connect/token', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization:': 'Basic ' + btoa(clientID + ":" + clientSecret) 
+      },
+      body: JSON.stringify({ grant_type: 'authorization_code', code: authorize.code, redirect_uri: authorize.redirect_url })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data));
+
+  }
+
   XeroAuthSend(forecasts) {
-    // THIS METHOD NEED TO CALL AUTHORIZATIONCONTROLLER.CS - "INDEX"
+    // Onclick send client to the xero login link
     console.log(this.state.forecasts.link);
     window.location.href = this.state.forecasts.link;
   }
 
 static renderForecastsTable(forecasts) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>String</th>
-            <th>Summary</th>
-            <th>URL Link</th>
-          </tr>
-        </thead>
-        <tbody>
-        <td>{forecasts.date}</td>
-        <td>{forecasts.name}</td>
-        <td>{forecasts.link}</td>
-        </tbody>
-      </table>
+      <div>
+          <p>{forecasts.date}</p>
+          <p>{forecasts.name}</p>
+          <p>{forecasts.link}</p>
+          <p>{forecasts.clientid}</p>
+          <p>{forecasts.clientsecret}</p>
+      </div>
     );
   }
 
@@ -96,7 +134,7 @@ static renderForecastsTable(forecasts) {
   
 
   render() {
-    let contents = this.state.loading ? <p><em>Loading...</em></p> : FetchData.renderForecastsTable(this.state.forecasts);
+    let contents = this.state.loading ? <p><em>Loading...</em></p> : FetchData.renderForecastsTable(this.state.forecasts); 
     return (
         <div>
           <button onClick={this.XeroAuthSend}>Xero Connect</button>
@@ -226,6 +264,8 @@ static renderForecastsTable(forecasts) {
     });
     const data = await response.json();
     this.setState({ forecasts: data, loading: false });
+
   }
+  
 
 }
