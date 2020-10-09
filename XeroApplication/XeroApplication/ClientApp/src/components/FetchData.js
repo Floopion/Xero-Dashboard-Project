@@ -16,6 +16,27 @@ export class FetchData extends Component {
 
   componentDidMount() {
     this.populateWeatherData();
+
+    var currentLink = window.location.href;
+    var split = currentLink.split('&')
+    var urlsplit = split[0].split('?');
+
+    var url = urlsplit[0];
+    var code = urlsplit[1].split('=')[1];
+    var scope = split[1].split('=')[1];
+    var session_state = split[2].split('=')[1];
+
+    var tempArray = split;
+    var newLink = {
+      name: currentLink,
+      redirect_url: url,
+      response_type: code,
+      scopes: scope,
+      session_state: session_state
+
+    }
+    console.log(newLink);
+    console.log(JSON.stringify(newLink));
   }
 
   XeroAuthSend(forecasts) {
