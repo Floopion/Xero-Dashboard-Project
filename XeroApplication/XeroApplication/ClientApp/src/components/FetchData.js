@@ -73,16 +73,23 @@ export class FetchData extends Component {
     var clientSecret = "3f7I4q1Cty0GVbNa0AXojA206lcQfbGzn3prBFAQxbfHs5GC";
     var encoded = btoa(clientID + ":" + clientSecret)   //btoa encode base64
 
+    var one = btoa(clientID);
+    var two = btoa(clientSecret);
+
     //console.log(encoded);
 
-    fetch('https://identity.xero.com/connect/token', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json', 
-        'Authorization:': 'Basic ' + btoa(clientID + ":" + clientSecret) 
-      },
-      body: JSON.stringify({ grant_type: 'authorization_code', code: authorize.code, redirect_uri: authorize.redirect_url })
-    })
+    // fetch('https://identity.xero.com/connect/token', {
+    //   method: 'POST',
+    //   headers: { 
+    //     'Content-Type': 'application/x-www-form-urlencoded', 
+    //     'Authorization:': 'Basic ' + `${encoded}`
+    //   },
+    //   body: JSON.stringify({ grant_type: 'authorization_code', code: authorize.code, redirect_uri: authorize.redirect_url })
+    // })
+    // .then(response => response.json())
+    // .then(data => console.log(data));
+
+    fetch('https://identity.xero.com/connect/token')
     .then(response => response.json())
     .then(data => console.log(data));
 
