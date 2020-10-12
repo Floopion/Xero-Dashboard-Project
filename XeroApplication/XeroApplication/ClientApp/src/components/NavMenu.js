@@ -25,7 +25,7 @@ export class NavMenu extends Component {
   render () {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 nav-brand" light>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 nav-brand" light>
           <Container>
             <NavbarBrand tag={Link} to="/">Xero Ninja</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
