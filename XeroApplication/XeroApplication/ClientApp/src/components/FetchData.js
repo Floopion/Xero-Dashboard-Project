@@ -13,6 +13,13 @@ export class FetchData extends Component {
   constructor(props) {
     super(props);
     this.state = { forecasts: [],  loading: true };
+    this.XeroAuthSend = this.XeroAuthSend.bind(this);
+  }
+
+  XeroAuthSend() {
+    // Onclick send client to the xero login link
+    console.log(this.state.forecasts.status);
+    window.location.href = this.state.forecasts.link;
   }
 
   componentDidMount() {
@@ -33,43 +40,17 @@ export class FetchData extends Component {
 
 
   // static renderForecastsTable(forecasts) {
+  //   //console.log(forecasts);
   //   return (
-  //     <table className='table table-striped' aria-labelledby="tabelLabel">
-  //       <thead>
-  //         <tr>
-  //           <th>Date</th>
-  //           <th>Temp. (C)</th>
-  //           <th>Temp. (F)</th>
-  //           <th>Summary</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         {forecasts.map(forecast =>
-  //           <tr key={forecast.date}>
-  //             <td>{forecast.date}</td>
-  //             <td>{forecast.temperatureC}</td>
-  //             <td>{forecast.temperatureF}</td>
-  //             <td>{forecast.summary}</td>
-  //           </tr>
-  //         )}
-  //       </tbody>
-  //     </table>
+  //     <div>
+  //       <p>{forecasts.status}</p>
+  //       <p>{forecasts.link}</p>
+  //     </div>
   //   );
   // }
 
-
-    static renderForecastsTable(forecasts) {
-    //console.log(forecasts);
-    return (
-      <div>
-        <p>API CONNECTED</p>
-        <p>{ this.forecasts }</p>
-      </div>
-    );
-  }
-
   render() {
-    let contents = this.state.loading ? <p><em>Loading...</em></p> : FetchData.renderForecastsTable(this.state.forecasts); 
+    //let contents = this.state.loading ? <p><em>Loading...</em></p> : FetchData.renderForecastsTable(this.state.forecasts); 
     
     return (
         <div>
@@ -87,9 +68,9 @@ export class FetchData extends Component {
                 </ProSidebar>
               </div>
               <div className="col-10">
+              <button onClick={this.XeroAuthSend}>Xero Connect</button>
                 <CCardGroup>
                   <CCard>
-                    <div>{ contents }</div>
                     <CCardHeader>
                       Line Chart
                     </CCardHeader>
