@@ -46,9 +46,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("/oauth")]
-        public async Task<JsonResult> Get(string code, string state)
+        public async Task<ContentResult> Get(string code, string state)
         {
-            var result = new JsonResult();
+            var result = new ContentResult();
             string[] array = {"Hello"};
             var tenantList = new List<Tenant>();
             using (var client = new HttpClient())
