@@ -12,3 +12,56 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.card-group {
+  margin: 20px 0;
+}
+
+.nav-brand{
+  background-color: #32465A
+}
+
+.nav-link{
+  color: #fff !important;
+}
+
+.nav-link:hover{
+  color: #333 !important;
+}
+
+.nav-item{
+  margin-left: 11px
+}
+
+.landing-page{
+  background-image: "flask-dashboard-coreui-screen.png";
+}
+
+h1{
+  text-align: center;
+  margin: 10px 0 20px 0
+}
+
+p{
+  text-align: center;
+}
+
+.heroText{
+  margin-top: 40px;
+}
+
+.dasboardContainer{
+  right: 0px;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100vw !important;
+  max-width: 100vw;
+  top: 58px;
+  bottom: 0;
+  height: 100%;
+}
+
+body{
+  background: #333;
+}

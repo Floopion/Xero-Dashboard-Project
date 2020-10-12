@@ -1,63 +1,46 @@
 import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService'
+import {CCard, CCardBody, CCardGroup, CCardHeader} from '@coreui/react'
+import {CChartDoughnut, CChartLine, CChartRadar} from '@coreui/react-chartjs'
+import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import { FaHeart,FaGem } from 'react-icons/fa';
+import 'react-pro-sidebar/dist/css/styles.css';
+
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { forecasts: String, loading: true };
   }
 
   componentDidMount() {
     this.populateWeatherData();
   }
 
-  static renderForecastsTable(forecasts) {
-    return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    );
-  }
+  // static renderForecastsTable(forecasts) {
+  //   return (
+  //       forecasts.json()
+  //   );
+  // }
 
   render() {
+
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+      : <p>{this.state.forecasts}</p>;
 
     return (
-      <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
-      </div>
+        <div>
+         <p > {contents} </p>
+        </div>
     );
   }
 
   async populateWeatherData() {
-    const token = await authService.getAccessToken();
-    const response = await fetch('weatherforecast', {
-      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-    });
-    const data = await response.json();
+      const response = await fetch('/api/values')
+      const data = await response.body;
     this.setState({ forecasts: data, loading: false });
   }
 }
