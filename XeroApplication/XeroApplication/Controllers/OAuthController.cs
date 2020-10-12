@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
              scope: "openid profile email files accounting.transactions accounting.transactions.read accounting.reports.read accounting.journals.read accounting.settings accounting.settings.read accounting.contacts accounting.contacts.read accounting.attachments accounting.attachments.read offline_access"
          );
 
-        var AuthLink = new { Status = 200, Link = url}
+        var AuthLink = new { Status = 200, Link = url};
          return Json(AuthLink);
 
             // return new ContentResult
