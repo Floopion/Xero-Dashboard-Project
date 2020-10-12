@@ -32,7 +32,8 @@ namespace WebApplication1.Controllers
              scope: "openid profile email files accounting.transactions accounting.transactions.read accounting.reports.read accounting.journals.read accounting.settings accounting.settings.read accounting.contacts accounting.contacts.read accounting.attachments accounting.attachments.read offline_access"
          );
 
-         return Json(new { Status = 200, Link = url} );
+        var AuthLink = new { Status = 200, Link = url}
+         return Json(AuthLink);
 
             // return new ContentResult
             // {
@@ -45,9 +46,10 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("/oauth")]
-        public async Task<ContentResult> Get(string code, string state)
+        public async Task<JsonResult> Get(string code, string state)
         {
-            var result = new ContentResult();
+            var result = new JsonResult();
+            string[] array = {"Hello"};
             var tenantList = new List<Tenant>();
             using (var client = new HttpClient())
             {
