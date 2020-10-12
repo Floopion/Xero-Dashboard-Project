@@ -12,39 +12,65 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { forecasts: [],  loading: true };
   }
 
   componentDidMount() {
-    this.populateWeatherData();
+    //this.populateWeatherData();
+    //this.getAuthURL();
+
+
+    fetch('https://localhost:5001/get-link', {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+  })
+  .then(response => response.json())
+    .then((data) => {
+      console.log(data);
+      this.state = { forecasts: data, loading: false };
+    })
   }
 
-  static renderForecastsTable(forecasts) {
+
+  // static renderForecastsTable(forecasts) {
+  //   return (
+  //     <table className='table table-striped' aria-labelledby="tabelLabel">
+  //       <thead>
+  //         <tr>
+  //           <th>Date</th>
+  //           <th>Temp. (C)</th>
+  //           <th>Temp. (F)</th>
+  //           <th>Summary</th>
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         {forecasts.map(forecast =>
+  //           <tr key={forecast.date}>
+  //             <td>{forecast.date}</td>
+  //             <td>{forecast.temperatureC}</td>
+  //             <td>{forecast.temperatureF}</td>
+  //             <td>{forecast.summary}</td>
+  //           </tr>
+  //         )}
+  //       </tbody>
+  //     </table>
+  //   );
+  // }
+
+
+    static renderForecastsTable(forecasts) {
+    //console.log(forecasts);
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <div>
+        <p>API CONNECTED</p>
+        <p>{ this.forecasts }</p>
+      </div>
     );
   }
 
   render() {
+    let contents = this.state.loading ? <p><em>Loading...</em></p> : FetchData.renderForecastsTable(this.state.forecasts); 
+    
     return (
         <div>
           <div className="container dasboardContainer">
@@ -63,6 +89,7 @@ export class FetchData extends Component {
               <div className="col-10">
                 <CCardGroup>
                   <CCard>
+                    <div>{ contents }</div>
                     <CCardHeader>
                       Line Chart
                     </CCardHeader>
@@ -171,12 +198,25 @@ export class FetchData extends Component {
     );
   }
 
-  async populateWeatherData() {
-    const token = await authService.getAccessToken();
-    const response = await fetch('weatherforecast', {
-      headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-    });
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
-  }
+
+
+  // async populateWeatherData() {
+  //   const token = await authService.getAccessToken();
+  //   const response = await fetch('weatherforecast', {
+  //     headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+  //   });
+  //   const data = await response.json();
+  //   this.setState({ forecasts: data, loading: false });
+  // }
+  
+  // async populateWeatherData() {
+  //   // const token = await authService.getAccessToken();
+  //   // const response = await fetch('https://localhost:5001/get-link', {
+  //   //   headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
+  //   // });
+  //   const response = await fetch('https://localhost:5001/get-link')
+  //   .then(response => response.json())
+  //   //const data = await response.json();
+  //   this.setState({ forecasts: response, loading: false });
+  // }
 }
