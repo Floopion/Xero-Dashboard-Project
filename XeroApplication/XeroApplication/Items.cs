@@ -7,5 +7,12 @@ namespace WebApplication1
         public int Status { get; set; }
 
         public string Link { get; set; }
+
+        public string Token { get; set; }
+
+        public string Refresh { get; set; }
+
+        public string Idenitiy { get; set; }
+
     }
 }

@@ -13,6 +13,7 @@ export class FetchData extends Component {
   constructor(props) {
     super(props);
     this.state = { forecasts: [],  loading: true };
+    this.getdata = { data: [], loading: true };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
   }
 
@@ -35,7 +36,30 @@ export class FetchData extends Component {
     .then((data) => {
       console.log(data);
       this.state = { forecasts: data, loading: false };
+    });
+
+    fetch('https://localhost:5001/getData', {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+  })
+  .then(response => response.json())
+    .then((d) => {
+      console.log(d);
+      this.getdata = { data: d, loading: false };
+    });
+
+    if (this.getdata.data.acode == null)
+    {
+      fetch('https://localhost:5001/getData', {
+        method: 'GET',
+        headers: {"Content-Type": "application/json"}
     })
+    .then(response => response.json())
+      .then((d) => {
+        console.log(d);
+        this.getdata = { data: d, loading: false };
+      });
+    }
   }
 
 
