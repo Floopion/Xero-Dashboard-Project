@@ -23,6 +23,7 @@ namespace WebApplication1.Controllers
         private Items tempObject = new Items();
         private Items listofitems = new Items();
         static volatile public string holdAllData = "";
+        static volatile public string holdRequestData = "";
         // GET api/values
         [HttpGet]
         public JsonResult Get()
@@ -108,11 +109,10 @@ namespace WebApplication1.Controllers
                         data = data + invoices;
                     }
                     
-                    tempObject.Tenant = tenant;
-                    tempObject.Invoices = invoices;
-
-                    listofitems.Tenant = "Tenanat is already formatted to json";
-                    listofitems.Invoices = "Data is already formatted to json on request";                      
+                    listofitems.Tenant = JsonConvert.SerializeObject(tenantList);
+                    listofitems.Invoices = "Data is already formatted to json on request from xero. View '/showData' for more information.";          
+                    
+                    holdRequestData = invoices;      // global variable, this is bad. Will change it later       
 
                 }
 
@@ -122,10 +122,11 @@ namespace WebApplication1.Controllers
 
             string jsonthis = JsonConvert.SerializeObject(listofitems);
             holdAllData = jsonthis;     // global variable, this is bad. Will change it later
+
             // System.Console.WriteLine("PRINT JSON FORMATTED ITEMS LIST");
             // System.Console.WriteLine(jsonthis);
             System.Console.WriteLine("REDIRECTION");
-            return Redirect("https://localhost:5001/showToken");
+            return Redirect("https://localhost:5001/fetch-data");
             // return Content(jsonthis, "application/json");
         
         }
@@ -139,9 +140,17 @@ namespace WebApplication1.Controllers
             System.Console.WriteLine(temp);
         }
 
+        
+        [HttpGet("/showData")]
+        public ActionResult DisplayData()
+        {
+            //string jsonthis = JsonConvert.SerializeObject(listofitems);
+            return Content(holdRequestData, "application/json");
+        }
+
 
         [HttpGet("/showToken")]
-        public ActionResult Display()
+        public ActionResult DisplayToken()
         {
             //string jsonthis = JsonConvert.SerializeObject(listofitems);
             return Content(holdAllData, "application/json");
