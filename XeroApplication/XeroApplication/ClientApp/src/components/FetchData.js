@@ -38,28 +38,23 @@ export class FetchData extends Component {
       this.state = { forecasts: data, loading: false };
     });
 
-    fetch('https://localhost:5001/getData', {
+    if (this.getdata.loading == true || this.getdata.data == null)
+    {   
+      this.readData();
+    }
+  }
+
+  readData()
+  {
+    fetch('https://localhost:5001/readText', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
-  })
-  .then(response => response.json())
-    .then((d) => {
-      console.log(d);
-      this.getdata = { data: d, loading: false };
-    });
-
-    if (this.getdata.data.acode == null)
-    {
-      fetch('https://localhost:5001/getData', {
-        method: 'GET',
-        headers: {"Content-Type": "application/json"}
     })
     .then(response => response.json())
       .then((d) => {
         console.log(d);
         this.getdata = { data: d, loading: false };
       });
-    }
   }
 
 

@@ -51,7 +51,8 @@ namespace WebApplication1.Controllers
         [HttpGet("/readText")]
         public JsonResult ReadText()
         {
-            string[] files = { "AccessToken.txt", "RefreshToken.txt", "IdentityToken.txt"  };
+            string[] files = { "AccessToken.txt", "RefreshToken.txt", "IdentityToken.txt", "Tenant.txt", "Data.txt"  };
+            string path = "\\Xero-Dashboard-Project\\XeroApplication\\XeroApplication\\Files\\";
             string[] tempTokens = new string[files.Length];
             int count = 0;
             foreach (string file in files)
@@ -59,11 +60,17 @@ namespace WebApplication1.Controllers
                 try
                 {
                     // Open the text file using a stream reader.
-                    using (var sr = new StreamReader(file))
+                    using (var sr = new StreamReader(path + file))
                     {
                         // Read the stream as a string, and write the string to the console.
                         //Console.WriteLine(sr.ReadToEnd());
-                        tempTokens[count] = sr.ReadLine();
+                        if (count == 4)
+                        {
+                            tempTokens[count] = sr.ReadToEnd();
+                        }
+                        else {
+                            tempTokens[count] = sr.ReadLine();
+                        }
                     }
                 }
                 catch (IOException e)
@@ -73,8 +80,10 @@ namespace WebApplication1.Controllers
                 }
                 count++;
             }
+            var JsonPrint = new { AccessToken = tempTokens[0], RefreshToken = tempTokens[1], IdentityToken = tempTokens[2], Tenant = tempTokens[3], Data = tempTokens[4] };
+            //var JsonPrint = new { AccessToken = tempObject.Token, RefreshToken = tempObject.Refresh, IdentityToken = tempObject.Idenitiy, Tenant = tempObject.Tenant, Data = tempObject.Invoices };
 
-            return Json(tempTokens);
+            return Json(JsonPrint);
         }
 
         [HttpGet("/getData")]
@@ -104,6 +113,7 @@ namespace WebApplication1.Controllers
                 var refreshToken = response.RefreshToken;
                 var identityToken = response.IdentityToken;
                 string tenant;
+                string invoices;
 
                 tempObject.Token = accessToken;
                 tempObject.Refresh = refreshToken;
@@ -117,20 +127,39 @@ namespace WebApplication1.Controllers
                     tenant = httpResult.Content.ReadAsStringAsync().Result;
                     tenantList = JsonConvert.DeserializeObject<List<Tenant>>(tenant);
                 }
-                var content = String.Format(@"<html><head></head><body>
+                string data = "";
+                foreach (Tenant t in tenantList)
+                {
+                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/TaxRates"))
+                    {
+                        requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
+                        HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
+                        System.Console.WriteLine(httpResult.RequestMessage);
+                        invoices = httpResult.Content.ReadAsStringAsync().Result;
+                        data = data + invoices;
+                    }
+                    
+                    tempObject.Tenant = tenant;
+                    tempObject.Invoices = invoices;
+                     var content = String.Format(@"<html><head></head><body>
                     <h3>AccessToken</h3><p>{0}</p>
                     <h3>RefreshToken</h3><p>{1}</p>
                     <h3>IdentityToken</h3><p>{2}</p>
                     <h3>Tenant</h3><p>{3}</p>
+                    <h3>Data</h3><p>{4}</p>
                     <a href='https://localhost:5001/fetch-data'>Home</a>
                     <script>console.log('{4}')</script>
-                    </body></html>", accessToken, refreshToken, identityToken, tenant, tempObject.Idenitiy);
+                    </body></html>", accessToken, refreshToken, identityToken, tenant, tempObject.Invoices);
                             result.Content = content;
                             result.ContentType = "text/html";
-                
+                        
 
-                string[] lines = { accessToken, refreshToken, identityToken };
-                string[] files = { "AccessToken.txt", "RefreshToken.txt", "IdentityToken.txt"  };
+                }
+                
+                // --- Testing Area ---
+                // define the variable and file names that are going to be written
+                string[] lines = { accessToken, refreshToken, identityToken, tenant, tempObject.Invoices };
+                string[] files = { "AccessToken.txt", "RefreshToken.txt", "IdentityToken.txt", "Tenant.txt", "Data.txt"  };
 
                 // Set a variable to the Documents path.
                 string docPath =
@@ -142,7 +171,7 @@ namespace WebApplication1.Controllers
                 int count = 0;
                 foreach (string file in files)
                 {
-                    using (StreamWriter outputFile = new StreamWriter(Path.Combine("\\Xero-Dashboard-Project\\XeroApplication\\XeroApplication", file)))
+                    using (StreamWriter outputFile = new StreamWriter(Path.Combine("\\Xero-Dashboard-Project\\XeroApplication\\XeroApplication\\Files", file)))
                     {  
                         outputFile.WriteLine(lines[count]);
                     }
@@ -201,7 +230,7 @@ namespace WebApplication1.Controllers
                 string data = "";
                 foreach (Tenant t in tenantList)
                 {
-                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/Invoices"))
+                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/TaxRates"))
                     {
                         requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
                         HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;

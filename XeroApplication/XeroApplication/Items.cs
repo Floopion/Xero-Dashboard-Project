@@ -14,5 +14,9 @@ namespace WebApplication1
 
         public string Idenitiy { get; set; }
 
+        public string Tenant { get; set; }
+
+        public string Invoices { get; set; }
+
     }
 }
