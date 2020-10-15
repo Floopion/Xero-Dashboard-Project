@@ -20,7 +20,6 @@ namespace WebApplication1.Controllers
     {
         private string clientId = "9D49BD8A6A61429E98270B90FD3A5FFE";
         private string clientSecret = "3f7I4q1Cty0GVbNa0AXojA206lcQfbGzn3prBFAQxbfHs5GC";
-        private Items tempObject = new Items();
         private Items listofitems = new Items();
         static volatile public string holdAllData = "";
         static volatile public string holdRequestData = "";
@@ -55,7 +54,6 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> GetData(string code, string state)
         {
             var result = new ContentResult();
-            string[] array = {"Hello"};
             var tenantList = new List<Tenant>();
             using (var client = new HttpClient())
             {
@@ -80,11 +78,7 @@ namespace WebApplication1.Controllers
                 string tenant;
                 string invoices;
 
-                tempObject.Token = accessToken;
-                tempObject.Refresh = refreshToken;
-                tempObject.Idenitiy = identityToken;
                 listofitems.Status = 200;
-                listofitems.Link = "This is the link";
                 listofitems.Token = accessToken;
                 listofitems.Refresh = refreshToken;
                 listofitems.Idenitiy = identityToken;
@@ -115,9 +109,6 @@ namespace WebApplication1.Controllers
                     holdRequestData = invoices;      // global variable, this is bad. Will change it later       
 
                 }
-
-                System.Console.WriteLine("PRINT ACCESS TOKEN - REVIEW FOR JSON FORMATE");
-                System.Console.WriteLine(accessToken);
             }
 
             string jsonthis = JsonConvert.SerializeObject(listofitems);
@@ -129,15 +120,6 @@ namespace WebApplication1.Controllers
             return Redirect("https://localhost:5001/fetch-data");
             // return Content(jsonthis, "application/json");
         
-        }
-
-        public void GetDataFromMethod(string json)
-        {
-            string temp = json;
-            holdAllData = json;
-
-            System.Console.WriteLine("CALLING METHOD THAT IS HOLDING THE JSON DATA");
-            System.Console.WriteLine(temp);
         }
 
         
