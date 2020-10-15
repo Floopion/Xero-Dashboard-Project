@@ -13,6 +13,7 @@ export class FetchData extends Component {
   constructor(props) {
     super(props);
     this.state = { forecasts: [],  loading: true };
+    this.gettoken = { data: [], loading: true };
     this.getdata = { data: [], loading: true };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
   }
@@ -38,25 +39,27 @@ export class FetchData extends Component {
       this.state = { forecasts: data, loading: false };
     });
 
-    if (this.getdata.loading == true || this.getdata.data == null)
-    {   
-      this.readData();
-    }
-  }
-
-  readData()
-  {
-    fetch('https://localhost:5001/readText', {
+    fetch('https://localhost:5001/showToken', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
     })
     .then(response => response.json())
-      .then((d) => {
-        console.log(d);
-        this.getdata = { data: d, loading: false };
+      .then((dataToken) => {
+        console.log(dataToken);
+        this.gettoken = { data: dataToken, loading: false };
+      });
+
+      
+    fetch('https://localhost:5001/showData', {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+    })
+    .then(response => response.json())
+      .then((dataXero) => {
+        console.log(dataXero);
+        this.getdata = { data: dataXero, loading: false };
       });
   }
-
 
   // static renderForecastsTable(forecasts) {
   //   //console.log(forecasts);
