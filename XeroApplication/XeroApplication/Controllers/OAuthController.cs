@@ -100,7 +100,7 @@ namespace WebApplication1.Controllers
                 string data = "";
                 foreach (Tenant t in tenantList)
                 {
-                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/TaxRates"))
+                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/Invoices"))
                     {
                         requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
                         HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
@@ -195,7 +195,7 @@ namespace WebApplication1.Controllers
                 string data = "";
                 foreach (Tenant t in tenantList)
                 {
-                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/TaxRates"))
+                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/Invoices"))
                     {
                         requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
                         HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
