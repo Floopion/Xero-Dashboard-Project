@@ -127,7 +127,16 @@ namespace WebApplication1.Controllers
         public ActionResult DisplayData()
         {
             //string jsonthis = JsonConvert.SerializeObject(listofitems);
-            return Content(holdRequestData, "application/json");
+            Items isNull = new Items();
+            if(holdRequestData == "")
+            {
+                isNull.Status = 404;
+                string isNullData = JsonConvert.SerializeObject(isNull);
+                return Content(isNullData, "application/json");
+            }
+            else {
+                return Content(holdRequestData, "application/json");
+            }
         }
 
 
@@ -135,7 +144,16 @@ namespace WebApplication1.Controllers
         public ActionResult DisplayToken()
         {
             //string jsonthis = JsonConvert.SerializeObject(listofitems);
-            return Content(holdAllData, "application/json");
+            Items isNull = new Items();
+            if(holdAllData == "")
+            {
+                isNull.Status = 404;
+                string isNullData = JsonConvert.SerializeObject(isNull);
+                return Content(isNullData, "application/json");
+            }
+            else {
+                return Content(holdAllData, "application/json");
+            }
         }
 
         [HttpGet("/oauth")]
