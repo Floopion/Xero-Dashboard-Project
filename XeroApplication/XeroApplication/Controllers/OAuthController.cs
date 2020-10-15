@@ -21,6 +21,8 @@ namespace WebApplication1.Controllers
         private string clientId = "9D49BD8A6A61429E98270B90FD3A5FFE";
         private string clientSecret = "3f7I4q1Cty0GVbNa0AXojA206lcQfbGzn3prBFAQxbfHs5GC";
         private Items tempObject = new Items();
+        private Items listofitems = new Items();
+        static volatile public string holdAllData = "";
         // GET api/values
         [HttpGet]
         public JsonResult Get()
@@ -46,44 +48,6 @@ namespace WebApplication1.Controllers
             //     Content = url
             // };
 
-        }
-
-        [HttpGet("/readText")]
-        public JsonResult ReadText()
-        {
-            string[] files = { "AccessToken.txt", "RefreshToken.txt", "IdentityToken.txt", "Tenant.txt", "Data.txt"  };
-            string path = "\\Xero-Dashboard-Project\\XeroApplication\\XeroApplication\\Files\\";
-            string[] tempTokens = new string[files.Length];
-            int count = 0;
-            foreach (string file in files)
-            {
-                try
-                {
-                    // Open the text file using a stream reader.
-                    using (var sr = new StreamReader(path + file))
-                    {
-                        // Read the stream as a string, and write the string to the console.
-                        //Console.WriteLine(sr.ReadToEnd());
-                        if (count == 4)
-                        {
-                            tempTokens[count] = sr.ReadToEnd();
-                        }
-                        else {
-                            tempTokens[count] = sr.ReadLine();
-                        }
-                    }
-                }
-                catch (IOException e)
-                {
-                    Console.WriteLine("The file could not be read:");
-                    Console.WriteLine(e.Message);
-                }
-                count++;
-            }
-            var JsonPrint = new { AccessToken = tempTokens[0], RefreshToken = tempTokens[1], IdentityToken = tempTokens[2], Tenant = tempTokens[3], Data = tempTokens[4] };
-            //var JsonPrint = new { AccessToken = tempObject.Token, RefreshToken = tempObject.Refresh, IdentityToken = tempObject.Idenitiy, Tenant = tempObject.Tenant, Data = tempObject.Invoices };
-
-            return Json(JsonPrint);
         }
 
         [HttpGet("/getData")]
@@ -118,6 +82,11 @@ namespace WebApplication1.Controllers
                 tempObject.Token = accessToken;
                 tempObject.Refresh = refreshToken;
                 tempObject.Idenitiy = identityToken;
+                listofitems.Status = 200;
+                listofitems.Link = "This is the link";
+                listofitems.Token = accessToken;
+                listofitems.Refresh = refreshToken;
+                listofitems.Idenitiy = identityToken;
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/connections"))
@@ -141,54 +110,41 @@ namespace WebApplication1.Controllers
                     
                     tempObject.Tenant = tenant;
                     tempObject.Invoices = invoices;
-                     var content = String.Format(@"<html><head></head><body>
-                    <h3>AccessToken</h3><p>{0}</p>
-                    <h3>RefreshToken</h3><p>{1}</p>
-                    <h3>IdentityToken</h3><p>{2}</p>
-                    <h3>Tenant</h3><p>{3}</p>
-                    <h3>Data</h3><p>{4}</p>
-                    <a href='https://localhost:5001/fetch-data'>Home</a>
-                    <script>console.log('{4}')</script>
-                    </body></html>", accessToken, refreshToken, identityToken, tenant, tempObject.Invoices);
-                            result.Content = content;
-                            result.ContentType = "text/html";
-                        
+
+                    listofitems.Tenant = "Tenanat is already formatted to json";
+                    listofitems.Invoices = "Data is already formatted to json on request";                      
 
                 }
-                
-                // --- Testing Area ---
-                // define the variable and file names that are going to be written
-                string[] lines = { accessToken, refreshToken, identityToken, tenant, tempObject.Invoices };
-                string[] files = { "AccessToken.txt", "RefreshToken.txt", "IdentityToken.txt", "Tenant.txt", "Data.txt"  };
 
-                // Set a variable to the Documents path.
-                string docPath =
-                //Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                Environment.GetEnvironmentVariable("OutputData");
-
-
-                // Write the string array to a new file named "WriteLines.txt".
-                int count = 0;
-                foreach (string file in files)
-                {
-                    using (StreamWriter outputFile = new StreamWriter(Path.Combine("\\Xero-Dashboard-Project\\XeroApplication\\XeroApplication\\Files", file)))
-                    {  
-                        outputFile.WriteLine(lines[count]);
-                    }
-                    count++;
-                }
+                System.Console.WriteLine("PRINT ACCESS TOKEN - REVIEW FOR JSON FORMATE");
+                System.Console.WriteLine(accessToken);
             }
 
-            //System.Console.WriteLine("REDIRECTION");
-            //return Redirect("https://localhost:5001/");
-            return result;
+            string jsonthis = JsonConvert.SerializeObject(listofitems);
+            holdAllData = jsonthis;     // global variable, this is bad. Will change it later
+            // System.Console.WriteLine("PRINT JSON FORMATTED ITEMS LIST");
+            // System.Console.WriteLine(jsonthis);
+            System.Console.WriteLine("REDIRECTION");
+            return Redirect("https://localhost:5001/showToken");
+            // return Content(jsonthis, "application/json");
+        
+        }
+
+        public void GetDataFromMethod(string json)
+        {
+            string temp = json;
+            holdAllData = json;
+
+            System.Console.WriteLine("CALLING METHOD THAT IS HOLDING THE JSON DATA");
+            System.Console.WriteLine(temp);
         }
 
 
         [HttpGet("/showToken")]
-        public JsonResult Display()
-        {   
-            return Json(new { status = 200, token = tempObject.Token });
+        public ActionResult Display()
+        {
+            //string jsonthis = JsonConvert.SerializeObject(listofitems);
+            return Content(holdAllData, "application/json");
         }
 
         [HttpGet("/oauth")]
