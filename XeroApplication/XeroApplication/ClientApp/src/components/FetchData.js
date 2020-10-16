@@ -26,9 +26,18 @@ export class FetchData extends Component {
 
   componentDidMount() {
     //this.populateWeatherData();
-    //this.getAuthURL();
 
+    this.GetLink();
+    // if(this.state.forecasts.status == 200)
+    // {
+    //   window.location.href = this.state.forecasts.link;
+    // }
+    this.GetToken();
+    this.GetData();
+  }
 
+  GetLink()
+  {
     fetch('https://localhost:5001/get-link', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
@@ -38,7 +47,11 @@ export class FetchData extends Component {
       console.log(data);
       this.state = { forecasts: data, loading: false };
     });
+  }
 
+
+  GetToken()
+  {
     fetch('https://localhost:5001/showToken', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
@@ -48,8 +61,10 @@ export class FetchData extends Component {
         console.log(dataToken);
         this.gettoken = { data: dataToken, loading: false };
       });
+  }
 
-      
+  GetData()
+  {
     fetch('https://localhost:5001/showData', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
