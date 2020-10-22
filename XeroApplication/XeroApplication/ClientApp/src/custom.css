@@ -65,3 +65,9 @@ p{
 body{
   background: #333;
 }
+
+.ajax-loader{
+  display: block;
+  margin: auto;
+  margin-top: 37vh;
+}

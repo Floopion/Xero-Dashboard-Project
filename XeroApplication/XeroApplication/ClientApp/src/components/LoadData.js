@@ -50,16 +50,15 @@ export class LoadData extends Component {
 
 
   render() {
-    //let contents = this.state.loading ? <p><em>Loading...</em></p> : LoadData.renderRedirect(this.state.forecasts); 
     if (this.state.loading) {
-      return <p>Still Loading...</p>;
+      return <img className="ajax-loader" src={process.env.PUBLIC_URL + '/img/ajax-loader.gif'} />;
     }
     else {
       console.log(this.state.forecasts.link);
       window.location.href = this.state.forecasts.link;   // redirect user to xero login
     return (
           <div>
-            <p>Loading..... Redirecting</p>
+            <img className="ajax-loader" src={process.env.PUBLIC_URL + '/img/ajax-loader.gif'} />
         </div>
       );
     }
