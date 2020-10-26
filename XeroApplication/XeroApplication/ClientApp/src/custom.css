@@ -71,3 +71,16 @@ body{
   margin: auto;
   margin-top: 37vh;
 }
+
+.pro-sidebar{
+  height: 100vh;
+  color: white;
+}
+
+.pro-icon-wrapper{
+  background-color: #32465A !important;
+}
+
+.pro-sidebar-inner{
+  background: #0C6E8E !important;
+}
