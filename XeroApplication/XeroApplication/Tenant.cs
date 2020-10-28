@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
  
-namespace WebApplication1
+namespace XeroApplication
 {
     public class Tenant
     {
