@@ -84,3 +84,12 @@ body{
 .pro-sidebar-inner{
   background: #0C6E8E !important;
 }
+
+.barChart{
+  color: white;
+}
+
+.recharts-wrapper {
+  margin : 0 auto;
+  width: 80%;
+}
