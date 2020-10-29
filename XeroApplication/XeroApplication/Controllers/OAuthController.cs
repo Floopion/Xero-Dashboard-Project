@@ -12,17 +12,25 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace WebApplication1.Controllers
+namespace XeroApplication.Controllers
 {
     [Route("/get-link")]
     [ApiController]
     public class OAuthController : Controller
     {
-        private string clientId = "9D49BD8A6A61429E98270B90FD3A5FFE";
-        private string clientSecret = "3f7I4q1Cty0GVbNa0AXojA206lcQfbGzn3prBFAQxbfHs5GC";
         private Items listofitems = new Items();
         static volatile public string holdAllData = "";
         static volatile public string holdRequestData = "";
+
+
+        private MyXeroLogin _myXeroLogin;
+
+        public OAuthController(MyXeroLogin myXeroLogin)
+        {
+            _myXeroLogin = myXeroLogin;     // get data from env variable
+
+        }
+
         // GET api/values
         [HttpGet]
         public JsonResult Get()
@@ -30,7 +38,7 @@ namespace WebApplication1.Controllers
         {
             var xeroAuthorizeUri = new RequestUrl("https://login.xero.com/identity/connect/authorize");
             var url = xeroAuthorizeUri.CreateAuthorizeUrl(
-             clientId: clientId,
+             clientId: _myXeroLogin.ClientID,
              responseType: "code", //hardcoded authorisation code for now.
              //redirectUri: "https://localhost:5001/oauth",
              redirectUri: "https://localhost:5001/getData",
@@ -62,8 +70,8 @@ namespace WebApplication1.Controllers
                     Address = "https://identity.xero.com/connect/token",
                     GrantType = "code",
                     Code = code,
-                    ClientId = clientId,
-                    ClientSecret = clientSecret,
+                    ClientId = _myXeroLogin.ClientID,
+                    ClientSecret = _myXeroLogin.ClientSecret,
                     RedirectUri = "https://localhost:5001/getData",
                     Parameters =
                     {
@@ -169,8 +177,8 @@ namespace WebApplication1.Controllers
                     Address = "https://identity.xero.com/connect/token",
                     GrantType = "code",
                     Code = code,
-                    ClientId = clientId,
-                    ClientSecret = clientSecret,
+                    ClientId = _myXeroLogin.ClientID,
+                    ClientSecret = _myXeroLogin.ClientSecret,
                     RedirectUri = "https://localhost:5001/oauth",
                     Parameters =
                     {
