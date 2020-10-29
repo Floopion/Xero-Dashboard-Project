@@ -3,7 +3,7 @@ import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { FaGitter } from 'react-icons/fa';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart
 } from 'recharts';
 
 export class FetchData extends Component {
@@ -11,7 +11,7 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { data: [], forecasts: [],  loading: true, n:20};
+    this.state = { data: [], forecasts: [],  loading: true, n:50};
     this.gettoken = { data: [], loading: true };
     this.getdata = { data: [], loading: true };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
@@ -67,7 +67,7 @@ export class FetchData extends Component {
 
   static draw(data){
     
-    const datar = [
+    const dummydata = [
       {
         name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
       },
@@ -102,17 +102,16 @@ export class FetchData extends Component {
               </ProSidebar>
             </div>
             <div className="col-10 barChart">
-              <div className="flexContainer">
-                
-                <div className="flexItem">
-                  <h1>Invoices</h1>
-                  <ResponsiveContainer width='90%' height={600}>
+              <div className="gridContainer">
+                <div className="bar">
+                  <h5 className="graphTitle">Invoices</h5>
+                  <ResponsiveContainer width='90%' height={300}>
                       <BarChart
                       data={data}
                       margin={{
                         top: 5, right: 30, left: 20, bottom: 5,
                       }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#ffffff"/>
+                        <CartesianGrid/>
                         <XAxis dataKey="date" stroke="#000000"/>
                         <YAxis/>
                         <Tooltip dataKey="date" stroke="#000000"/>
@@ -122,18 +121,16 @@ export class FetchData extends Component {
                   </ResponsiveContainer>
                 </div>
 
-                <div className="flexItem">
-                  <h1>Tax Values</h1>
-                  <ResponsiveContainer width='90%' height={600}>
+                <div className="area">
+                  <h5 className="graphTitle">Tax Values</h5>
+                  <ResponsiveContainer width='90%' height={300}>
                   <AreaChart
-                    width={500}
-                    height={400}
-                    data={datar}
+                    data={dummydata}
                     margin={{
                       top: 10, right: 30, left: 0, bottom: 0,
                     }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
@@ -141,6 +138,52 @@ export class FetchData extends Component {
                   </AreaChart>
                   </ResponsiveContainer>
                 </div>
+
+                <div className="line">
+                <h5 className="graphTitle">Expenditure</h5>
+                <ResponsiveContainer width='90%' height={300}>
+                <LineChart
+                  width={500}
+                  height={300}
+                  data={dummydata}
+                  margin={{
+                    top: 5, right: 30, left: 20, bottom: 5,
+                  }}
+                >
+                  <CartesianGrid />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+                  <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                </LineChart>
+                </ResponsiveContainer>
+                </div>
+
+                <div className="pie">
+                <h5 className="graphTitle">Accounts</h5>
+                <ResponsiveContainer width='90%' height={300}>
+                <ComposedChart
+                  width={500}
+                  height={400}
+                  data={dummydata}
+                  margin={{
+                    top: 20, right: 80, bottom: 20, left: 20,
+                  }}
+                >
+                  <CartesianGrid />
+                  <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
+                  <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
+                  <Tooltip />
+                  <Legend />
+                  <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
+                  <Bar dataKey="pv" barSize={20} fill="#413ea0" />
+                  <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+                </ComposedChart>
+                </ResponsiveContainer>
+                </div>
+
               </div>
             </div>
           </div>
