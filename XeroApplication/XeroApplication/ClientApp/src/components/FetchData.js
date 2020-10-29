@@ -86,10 +86,10 @@ export class FetchData extends Component {
                     top: 5, right: 30, left: 20, bottom: 5,
                   }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#ffffff"/>
-                    <XAxis dataKey="date" stroke="#ffffff"/>
+                    <XAxis dataKey="date" stroke="#000000"/>
                     <YAxis/>
-                    <Tooltip dataKey="date" stroke="#ffffff"/>
-                    <Legend width={100} wrapperStyle={{left:500, Color: '#ffff', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
+                    <Tooltip dataKey="date" stroke="#000000"/>
+                    <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
                     <Bar dataKey="Total" fill="#0C6E8E" />
                   </BarChart>
                 </ResponsiveContainer>

@@ -63,7 +63,7 @@ p{
 }
 
 body{
-  background: #333;
+  background: #ffffff;
 }
 
 .ajax-loader{
@@ -86,10 +86,14 @@ body{
 }
 
 .barChart{
-  color: white;
+  color: black;
 }
 
 .recharts-wrapper {
   margin : 0 auto;
   width: 80%;
+}
+
+.recharts-legend-wrapper{
+  left: 51% !important;
 }
