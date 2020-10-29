@@ -47,15 +47,6 @@ namespace XeroApplication.Controllers
 
         var AuthLink = new { Status = 200, Link = url};
         return Json(AuthLink);
-
-            // return new ContentResult
-            // {
-            //     ContentType = "application/json",
-            //     StatusCode = (int)HttpStatusCode.OK,
-            //     //Content = JsonConvert.SerializeObject(url)
-            //     Content = url
-            // };
-
         }
 
         [HttpGet("/getData")]
