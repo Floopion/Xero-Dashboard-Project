@@ -65,3 +65,31 @@ p{
 body{
   background: #333;
 }
+
+.ajax-loader{
+  display: block;
+  margin: auto;
+  margin-top: 37vh;
+}
+
+.pro-sidebar{
+  height: 100vh;
+  color: white;
+}
+
+.pro-icon-wrapper{
+  background-color: #32465A !important;
+}
+
+.pro-sidebar-inner{
+  background: #0C6E8E !important;
+}
+
+.barChart{
+  color: white;
+}
+
+.recharts-wrapper {
+  margin : 0 auto;
+  width: 80%;
+}
