@@ -20,7 +20,10 @@ namespace XeroApplication.Controllers
     {
         private Items listofitems = new Items();
         static volatile public string holdAllData = "";
-        static volatile public string holdRequestData = "";
+        
+
+        static private string[] apiGetLinks = new string[] { "https://api.xero.com/api.xro/2.0/Invoices", "https://api.xero.com/api.xro/2.0/BankTransactions", "https://api.xero.com/api.xro/2.0/Payments", "https://api.xero.com/api.xro/2.0/TaxRates" };
+        static private string[] holdAllDataArray = new string[apiGetLinks.Length];
 
 
         private MyXeroLogin _myXeroLogin;
@@ -90,31 +93,32 @@ namespace XeroApplication.Controllers
                     tenant = httpResult.Content.ReadAsStringAsync().Result;
                     tenantList = JsonConvert.DeserializeObject<List<Tenant>>(tenant);
                 }
-                string data = "";
-                foreach (Tenant t in tenantList)
+                for (int i = 0; i < apiGetLinks.Length; i++)
                 {
-                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/Invoices"))
+                    string data = "";
+                    foreach (Tenant t in tenantList)
                     {
-                        requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
-                        HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
-                        System.Console.WriteLine(httpResult.RequestMessage);
-                        invoices = httpResult.Content.ReadAsStringAsync().Result;
-                        data = data + invoices;
-                    }
-                    
-                    listofitems.Tenant = JsonConvert.SerializeObject(tenantList);
-                    listofitems.Invoices = "Data is already formatted to json on request from xero. View '/showData' for more information.";          
-                    
-                    holdRequestData = invoices;      // global variable, this is bad. Will change it later       
+                        using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, apiGetLinks[i]))
+                        {
+                            requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
+                            HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
+                            System.Console.WriteLine(httpResult.RequestMessage);
+                            invoices = httpResult.Content.ReadAsStringAsync().Result;
+                            data = data + invoices;
+                        }
+                        
+                        listofitems.Tenant = JsonConvert.SerializeObject(tenantList);
+                        listofitems.Invoices = "Data is already formatted to json on request from xero. View '/showData' for more information.";          
+                        
+                        holdAllDataArray[i] = data;      
 
+                    }
                 }
             }
 
             string jsonthis = JsonConvert.SerializeObject(listofitems);
             holdAllData = jsonthis;     // global variable, this is bad. Will change it later
 
-            // System.Console.WriteLine("PRINT JSON FORMATTED ITEMS LIST");
-            // System.Console.WriteLine(jsonthis);
             System.Console.WriteLine("REDIRECTION");
             return Redirect("https://localhost:5001/fetch-data");
             // return Content(jsonthis, "application/json");
@@ -122,19 +126,64 @@ namespace XeroApplication.Controllers
         }
 
         
-        [HttpGet("/showData")]
-        public ActionResult DisplayData()
+        [HttpGet("/getInvoice")]
+        public ActionResult DisplayInvoice()
         {
-            //string jsonthis = JsonConvert.SerializeObject(listofitems);
             Items isNull = new Items();
-            if(holdRequestData == "")
+            if(holdAllDataArray[0] == null)
             {
                 isNull.Status = 404;
                 string isNullData = JsonConvert.SerializeObject(isNull);
                 return Content(isNullData, "application/json");
             }
             else {
-                return Content(holdRequestData, "application/json");
+                return Content(holdAllDataArray[0], "application/json");
+            }
+        }
+
+        [HttpGet("/getBankTransactions")]
+        public ActionResult DisplayBankTransactions()
+        {
+            Items isNull = new Items();
+            if(holdAllDataArray[1] == null)
+            {
+                isNull.Status = 404;
+                string isNullData = JsonConvert.SerializeObject(isNull);
+                return Content(isNullData, "application/json");
+            }
+            else {
+                return Content(holdAllDataArray[1], "application/json");
+            }
+        }
+
+        [HttpGet("/getPayments")]
+        public ActionResult DisplayPayments()
+        {
+            Items isNull = new Items();
+            if(holdAllDataArray[2] == null)
+            {
+                isNull.Status = 404;
+                string isNullData = JsonConvert.SerializeObject(isNull);
+                return Content(isNullData, "application/json");
+            }
+            else {
+                return Content(holdAllDataArray[2], "application/json");
+            }
+        }
+
+        
+        [HttpGet("/getTaxRates")]
+        public ActionResult DisplayTaxRates()
+        {
+            Items isNull = new Items();
+            if(holdAllDataArray[3] == null)
+            {
+                isNull.Status = 404;
+                string isNullData = JsonConvert.SerializeObject(isNull);
+                return Content(isNullData, "application/json");
+            }
+            else {
+                return Content(holdAllDataArray[3], "application/json");
             }
         }
 
@@ -153,70 +202,6 @@ namespace XeroApplication.Controllers
             else {
                 return Content(holdAllData, "application/json");
             }
-        }
-
-        [HttpGet("/oauth")]
-        public async Task<ContentResult> Get(string code, string state)
-        {
-            var result = new ContentResult();
-            string[] array = {"Hello"};
-            var tenantList = new List<Tenant>();
-            using (var client = new HttpClient())
-            {
-                var response = await client.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest
-                {
-                    Address = "https://identity.xero.com/connect/token",
-                    GrantType = "code",
-                    Code = code,
-                    ClientId = _myXeroLogin.ClientID,
-                    ClientSecret = _myXeroLogin.ClientSecret,
-                    RedirectUri = "https://localhost:5001/oauth",
-                    Parameters =
-                    {
-                        { "scope", "openid profile email files accounting.transactions accounting.transactions.read accounting.reports.read accounting.journals.read accounting.settings accounting.settings.read accounting.contacts accounting.contacts.read accounting.attachments accounting.attachments.read offline_access"}
-                    }
-                });
-
-                if (response.IsError) { throw new Exception(response.Error); }
-                var accessToken = response.AccessToken;
-                var refreshToken = response.RefreshToken;
-                var identityToken = response.IdentityToken;
-                string tenant;
-                string invoices;
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/connections"))
-                {
-                    HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
-                    System.Console.WriteLine(httpResult.RequestMessage);
-                    tenant = httpResult.Content.ReadAsStringAsync().Result;
-                    tenantList = JsonConvert.DeserializeObject<List<Tenant>>(tenant);
-                }
-                string data = "";
-                foreach (Tenant t in tenantList)
-                {
-                    using (var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://api.xero.com/api.xro/2.0/Invoices"))
-                    {
-                        requestMessage.Headers.Add("xero-tenant-id", t.TenantId.ToString());
-                        HttpResponseMessage httpResult = client.SendAsync(requestMessage).Result;
-                        System.Console.WriteLine(httpResult.RequestMessage);
-                        invoices = httpResult.Content.ReadAsStringAsync().Result;
-                        data = data + invoices;
-                    }
-                    var content = String.Format(@"<html><head></head><body>
-                    <h3>AccessToken</h3><p>{0}</p>
-                    <h3>RefreshToken</h3><p>{1}</p>
-                    <h3>IdentityToken</h3><p>{2}</p>
-                    <h3>Tenant</h3><p>{3}</p>
-                    <h3>Invoice Data</h3><p>{4}</p>
-                    <a href='https://localhost:5001/fetch-data'>Home</a>
-                    <script>console.log('{0}')</script>
-                    </body></html>", accessToken, refreshToken, identityToken, tenant, invoices);
-                            result.Content = content;
-                            result.ContentType = "text/html";
-
-                }
-            }
-            return result;
         }
     }
 }
