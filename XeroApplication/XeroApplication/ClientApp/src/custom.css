@@ -75,6 +75,8 @@ body{
 .pro-sidebar{
   height: 100vh;
   color: white;
+  min-width: unset;
+  width: unset;
 }
 
 .pro-icon-wrapper{
@@ -96,4 +98,18 @@ body{
 
 .recharts-legend-wrapper{
   left: 51% !important;
+}
+
+.flexContainer{
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+  flex-flow: column wrap;
+}
+
+.flexItem{
+  order: 1;
+  width: 50%;
+  display: inline-block;
 }
