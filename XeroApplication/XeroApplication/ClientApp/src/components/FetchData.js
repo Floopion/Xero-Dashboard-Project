@@ -11,26 +11,18 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { data: [], forecasts: [],  loading: true };
+    this.state = { data: [], forecasts: [],  loading: true, n:20};
     this.gettoken = { data: [], loading: true };
     this.getdata = { data: [], loading: true };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
   }
 
   XeroAuthSend() {
-    // Onclick send client to the xero login link
-    console.log(this.state.forecasts.status);
     window.location.href = this.state.forecasts.link;
   }
 
   componentDidMount() {
-    //this.populateWeatherData();
-
     this.GetLink();
-    // if(this.state.forecasts.status == 200)
-    // {
-    //   window.location.href = this.state.forecasts.link;
-    // }
     this.GetToken();
     this.GetData();
   }
@@ -73,39 +65,57 @@ export class FetchData extends Component {
   }
 
 
-  render() {
-    const {data} = this.state;
+  static draw(data){
     return (
-        <div>
-          <div className="container dasboardContainer">
-            <div className="row">
-              <div className="col-2">
-                <ProSidebar>
-                  <Menu iconShape="square">
-                    <MenuItem icon={<FaGitter />}>Invoices</MenuItem>
-                  </Menu>
-                </ProSidebar>
-              </div>
-              <div className="col-10 barChart">
-                <h1>Invoices</h1>
-                <ResponsiveContainer width='90%' height={600}>
-                    <BarChart
-                    data={data.Invoices}
-                    margin={{
-                      top: 5, right: 30, left: 20, bottom: 5,
-                    }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff"/>
-                      <XAxis dataKey="date" stroke="#ffffff"/>
-                      <YAxis/>
-                      <Tooltip dataKey="date" stroke="#ffffff"/>
-                      <Legend width={100} wrapperStyle={{left:500, Color: '#ffff', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
-                      <Bar dataKey="Total" fill="#82ca9d" />
-                    </BarChart>
-                  </ResponsiveContainer>
-              </div>
+      <div>
+        <div className="container dasboardContainer">
+          <div className="row">
+            <div className="col-2">
+              <ProSidebar>
+                <Menu iconShape="square">
+                  <MenuItem icon={<FaGitter />}>Invoices</MenuItem>
+                </Menu>
+              </ProSidebar>
+            </div>
+            <div className="col-10 barChart">
+              <h1>Invoices</h1>
+              <ResponsiveContainer width='90%' height={600}>
+                  <BarChart
+                  data={data}
+                  margin={{
+                    top: 5, right: 30, left: 20, bottom: 5,
+                  }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff"/>
+                    <XAxis dataKey="date" stroke="#ffffff"/>
+                    <YAxis/>
+                    <Tooltip dataKey="date" stroke="#ffffff"/>
+                    <Legend width={100} wrapperStyle={{left:500, Color: '#ffff', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
+                    <Bar dataKey="Total" fill="#0C6E8E" />
+                  </BarChart>
+                </ResponsiveContainer>
             </div>
           </div>
         </div>
+      </div>
     );
+  }
+  
+  render() {
+    const {data,n} = this.state;
+    let srted = data.Invoices;
+    let contents;
+    if(srted){
+        let newData = srted.slice(0,n);
+        contents = FetchData.draw(newData);
+    }else{
+        contents = FetchData.draw(data.Invoices);
+    }
+
+    return(
+      <div>
+        {contents}
+      </div>  
+    );
+
   }
 }
