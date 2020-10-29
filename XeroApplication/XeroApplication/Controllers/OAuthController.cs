@@ -20,7 +20,6 @@ namespace XeroApplication.Controllers
     {
         private Items listofitems = new Items();
         static volatile public string holdAllData = "";
-        
 
         static private string[] apiGetLinks = new string[] { "https://api.xero.com/api.xro/2.0/Invoices", "https://api.xero.com/api.xro/2.0/BankTransactions", "https://api.xero.com/api.xro/2.0/Payments", "https://api.xero.com/api.xro/2.0/TaxRates" };
         static private string[] holdAllDataArray = new string[apiGetLinks.Length];
@@ -126,7 +125,7 @@ namespace XeroApplication.Controllers
         }
 
         
-        [HttpGet("/getInvoice")]
+        [HttpGet("/getInvoices")]
         public ActionResult DisplayInvoice()
         {
             Items isNull = new Items();
