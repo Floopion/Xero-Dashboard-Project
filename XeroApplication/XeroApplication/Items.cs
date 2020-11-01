@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication1
+namespace XeroApplication
 {
     public class Items
     {
