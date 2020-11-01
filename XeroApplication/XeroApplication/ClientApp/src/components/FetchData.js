@@ -6,14 +6,37 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart
 } from 'recharts';
 
+const views =  {
+  "all": 0,
+  "invoices":1,
+  "taxes":2,
+  "payments":3,
+  "transactions":4
+}
+
 export class FetchData extends Component {
   static displayName = FetchData.name;
 
   constructor(props) {
     super(props);
-    this.state = { paymentData: [], transactionData: [], taxData: [], invoiceData: [], forecasts: [],  loading: true, n:50};
-    this.gettoken = { data: [], loading: true };
-    this.getdata = {loading: true };
+    this.state = { 
+      paymentData: [], 
+      transactionData: [], 
+      taxData: [], 
+      invoiceData: [],
+      forecasts: [],  
+      loading: true, 
+      n:20,
+      view: views.all
+    };
+    this.gettoken = { 
+      data: [], 
+      loading: true 
+    };
+    this.getdata = {
+      data: [],
+      loading: true 
+    };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
   }
 
@@ -222,14 +245,22 @@ export class FetchData extends Component {
   }
   
   render() {
-    const {invoiceData,n} = this.state;
+    const {invoiceData,n,view} = this.state;
     let srted = invoiceData.Invoices;
     let contents;
-    if(srted){
-        let newData = srted.slice(0,n);
-        contents = FetchData.draw(newData);
-    }else{
-        contents = FetchData.draw(invoiceData.Invoices);
+    
+    switch(view){
+      case 0:
+        if(srted){
+            let newData = srted.slice(0,n);
+            contents = FetchData.draw(newData);
+        }else{
+            contents = FetchData.draw(invoiceData.Invoices);
+        }
+        return contents;
+      default:
+        contents="Test Case"
+        return contents;
     }
 
     return(
