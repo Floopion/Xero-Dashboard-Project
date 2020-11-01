@@ -60,10 +60,11 @@ p{
   top: 58px;
   bottom: 0;
   height: 100%;
+  left: -30px;
 }
 
 body{
-  background: #ffffff;
+  background: #C0C0C0;
 }
 
 .ajax-loader{
@@ -114,7 +115,7 @@ body{
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 2;
-  background-color: gainsboro;
+  background-color: whitesmoke;
   border-radius: 50px;
   width: 100%;
 }
@@ -124,7 +125,7 @@ body{
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
-  background-color: gainsboro;
+  background-color: whitesmoke;
   border-radius: 50px;
   width: 100%;
 }
@@ -134,7 +135,7 @@ body{
   grid-column-end: 2;
   grid-row-start: 2;
   grid-row-end: 3;
-  background-color: gainsboro;
+  background-color: whitesmoke;
   border-radius: 50px;
   justify-self: center;
   width: 100%;
@@ -145,7 +146,7 @@ body{
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 3;
-  background-color: gainsboro;
+  background-color: whitesmoke;
   border-radius: 50px;
   justify-self: center;
   width: 100%;

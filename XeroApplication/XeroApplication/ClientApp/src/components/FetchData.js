@@ -11,9 +11,9 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { data: [], forecasts: [],  loading: true, n:50};
+    this.state = { paymentData: [], transactionData: [], taxData: [], invoiceData: [], forecasts: [],  loading: true, n:50};
     this.gettoken = { data: [], loading: true };
-    this.getdata = { data: [], loading: true };
+    this.getdata = {loading: true };
     this.XeroAuthSend = this.XeroAuthSend.bind(this);
   }
 
@@ -54,13 +54,43 @@ export class FetchData extends Component {
 
   GetData()
   {
-    fetch('https://localhost:5001/showData', {
+    fetch('https://localhost:5001/showInvoices', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
     })
     .then(response => response.json())
-      .then((dataXero) => {
-        this.setState({ data: dataXero, loading: false });
+      .then((invoices) => {
+        this.setState({ invoiceData: invoices});
+      });
+
+    
+    fetch('https://localhost:5001/getBankTransactions', {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+    })
+    .then(response => response.json())
+      .then((transactions) => {
+        this.setState({ transactionData: transactions});
+      });
+
+    
+    fetch('https://localhost:5001/getPayments', {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+    })
+    .then(response => response.json())
+      .then((payments) => {
+        this.setState({ paymentData: payments});
+      });
+
+    
+    fetch('https://localhost:5001/TaxRates', {
+      method: 'GET',
+      headers: {"Content-Type": "application/json"}
+    })
+    .then(response => response.json())
+      .then((taxes) => {
+        this.setState({ taxData: taxes, loading:false});
       });
   }
 
@@ -105,7 +135,7 @@ export class FetchData extends Component {
               <div className="gridContainer">
                 <div className="bar">
                   <h5 className="graphTitle">Invoices</h5>
-                  <ResponsiveContainer width='90%' height={300}>
+                  <ResponsiveContainer width='90%' height={200}>
                       <BarChart
                       data={data}
                       margin={{
@@ -123,7 +153,7 @@ export class FetchData extends Component {
 
                 <div className="area">
                   <h5 className="graphTitle">Tax Values</h5>
-                  <ResponsiveContainer width='90%' height={300}>
+                  <ResponsiveContainer width='90%' height={200}>
                   <AreaChart
                     data={dummydata}
                     margin={{
@@ -163,7 +193,7 @@ export class FetchData extends Component {
 
                 <div className="pie">
                 <h5 className="graphTitle">Accounts</h5>
-                <ResponsiveContainer width='90%' height={300}>
+                <ResponsiveContainer width='90%' height={200}>
                 <ComposedChart
                   width={500}
                   height={400}
@@ -192,14 +222,14 @@ export class FetchData extends Component {
   }
   
   render() {
-    const {data,n} = this.state;
-    let srted = data.Invoices;
+    const {invoiceData,n} = this.state;
+    let srted = invoiceData.Invoices;
     let contents;
     if(srted){
         let newData = srted.slice(0,n);
         contents = FetchData.draw(newData);
     }else{
-        contents = FetchData.draw(data.Invoices);
+        contents = FetchData.draw(invoiceData.Invoices);
     }
 
     return(
