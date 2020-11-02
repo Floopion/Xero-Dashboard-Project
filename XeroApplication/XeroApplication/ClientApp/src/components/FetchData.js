@@ -77,7 +77,7 @@ export class FetchData extends Component {
 
   GetData()
   {
-    fetch('https://localhost:5001/showInvoices', {
+    fetch('https://localhost:5001/getInvoices', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
     })
@@ -107,7 +107,7 @@ export class FetchData extends Component {
       });
 
     
-    fetch('https://localhost:5001/TaxRates', {
+    fetch('https://localhost:5001/getTaxRates', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
     })
