@@ -1,6 +1,6 @@
-import React, { Component,PureComponent } from 'react';
+import React, { Component,PureComponent,ReactDOM} from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { FaGitter } from 'react-icons/fa';
+import { FaGitter, FaChartBar, FaRegFileAlt,FaHandHoldingUsd,FaFileInvoiceDollar } from 'react-icons/fa';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart
@@ -26,7 +26,7 @@ export class FetchData extends Component {
       invoiceData: [],
       forecasts: [],  
       loading: true, 
-      n:20,
+      n:10,
       view: views.all
     };
     this.gettoken = { 
@@ -37,11 +37,11 @@ export class FetchData extends Component {
       data: [],
       loading: true 
     };
-    this.XeroAuthSend = this.XeroAuthSend.bind(this);
+    this.navClick = this.navClick.bind(this);
   }
-
-  XeroAuthSend() {
-    window.location.href = this.state.forecasts.link;
+    
+  navClick() {
+   console.log("clicked")
   }
 
   componentDidMount() {
@@ -149,8 +149,12 @@ export class FetchData extends Component {
           <div className="row">
             <div className="col-2">
               <ProSidebar>
-                <Menu iconShape="square">
-                  <MenuItem icon={<FaGitter />}>Invoices</MenuItem>
+                <Menu iconShape="circle">
+                  <MenuItem icon={<FaChartBar />} onClick={this.onClick}>Dashboard</MenuItem>
+                  <MenuItem icon={<FaGitter />} onClick={console.log("click")}>Invoices</MenuItem>
+                  <MenuItem icon={<FaFileInvoiceDollar />}>Tax Values</MenuItem>
+                  <MenuItem icon={<FaHandHoldingUsd />}>Expenditure</MenuItem>
+                  <MenuItem icon={<FaRegFileAlt />}>Accounts</MenuItem>
                 </Menu>
               </ProSidebar>
             </div>
@@ -225,7 +229,7 @@ export class FetchData extends Component {
                     top: 20, right: 80, bottom: 20, left: 20,
                   }}
                 >
-                  <CartesianGrid />
+                <CartesianGrid />
                   <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
                   <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
                   <Tooltip />
@@ -258,6 +262,11 @@ export class FetchData extends Component {
             contents = FetchData.draw(invoiceData.Invoices);
         }
         return contents;
+
+      case 1:
+          contents="Test Case"
+          return contents;  
+     
       default:
         contents="Test Case"
         return contents;
