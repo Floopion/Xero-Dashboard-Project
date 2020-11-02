@@ -37,9 +37,9 @@ code {
   background-image: "flask-dashboard-coreui-screen.png";
 }
 
-h1{
+h5{
   text-align: center;
-  margin: 10px 0 20px 0
+  margin: 10px 0 20px 0;
 }
 
 p{
@@ -60,8 +60,98 @@ p{
   top: 58px;
   bottom: 0;
   height: 100%;
+  left: -30px;
 }
 
 body{
-  background: #333;
+  background: #C0C0C0;
+}
+
+.ajax-loader{
+  display: block;
+  margin: auto;
+  margin-top: 37vh;
+}
+
+.pro-sidebar{
+  height: 100vh;
+  color: white;
+  min-width: unset;
+  width: unset;
+}
+
+.pro-icon-wrapper{
+  background-color: #32465A !important;
+}
+
+.pro-sidebar-inner{
+  background: #0C6E8E !important;
+}
+
+.barChart{
+  color: black;
+  margin-top: 30px;
+}
+
+.recharts-wrapper {
+  margin : 0 auto;
+  width: 80%;
+}
+
+.recharts-legend-wrapper{
+  left: 51% !important;
+}
+
+.gridContainer{
+  display: grid;
+  grid-template-columns: 45% 45%;
+  grid-column-gap: 5%;
+  column-gap: 5%;
+  row-gap: 7%;
+}
+
+.bar{
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  background-color: whitesmoke;
+  border-radius: 50px;
+  width: 100%;
+}
+
+.area{
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  background-color: whitesmoke;
+  border-radius: 50px;
+  width: 100%;
+}
+
+.line{
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  background-color: whitesmoke;
+  border-radius: 50px;
+  justify-self: center;
+  width: 100%;
+}
+
+.pie{
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  background-color: whitesmoke;
+  border-radius: 50px;
+  justify-self: center;
+  width: 100%;
+}
+
+.graphTitle{
+  margin: 10px 0 0 0; 
 }
