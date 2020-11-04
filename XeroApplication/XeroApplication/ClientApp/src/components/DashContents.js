@@ -35,7 +35,7 @@ export class DashContent extends Component {
     }
   
     componentWillReceiveProps(newProps){
-      this.state = { 
+      this.setState( { 
         paymentData: [], 
         transactionData: [], 
         taxData: [], 
@@ -44,7 +44,7 @@ export class DashContent extends Component {
         loading: true, 
         n:10,
         view: newProps.show
-      };
+      });
       this.GetLink();
       this.GetToken();
       this.GetData();
@@ -58,7 +58,7 @@ export class DashContent extends Component {
     })
     .then(response => response.json())
       .then((data) => {
-        this.state = { forecasts: data, loading: false };
+        this.setState({ forecasts: data, loading: false });
       });
     }
   
@@ -145,7 +145,6 @@ export class DashContent extends Component {
       ];
       
      return(
-          <div className="container">
             <div className="gridContainer">
               <div className="bar">
                 <h5 className="graphTitle">Invoices</h5>
@@ -227,8 +226,6 @@ export class DashContent extends Component {
               </ComposedChart>
               </ResponsiveContainer>
             </div>
-  
-           </div>
         </div>
      );
     }

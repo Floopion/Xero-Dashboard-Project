@@ -1,12 +1,4 @@
 import React, { Component } from 'react';
-import authService from './api-authorization/AuthorizeService'
-import {CCard, CCardBody, CCardGroup, CCardHeader} from '@coreui/react'
-import {CChartDoughnut, CChartLine, CChartRadar} from '@coreui/react-chartjs'
-import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { FaHeart,FaGem, FaWindows } from 'react-icons/fa';
-import 'react-pro-sidebar/dist/css/styles.css';
-import { Redirect } from 'react-router-dom';
-
 
 export class LoadData extends Component {
   static displayName = LoadData.name;
