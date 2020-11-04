@@ -18,7 +18,8 @@ code {
 }
 
 .nav-brand{
-  background-color: #32465A
+  background-color: #32465A;
+  margin-bottom: unset !important;
 }
 
 .nav-link{
@@ -71,21 +72,6 @@ body{
   display: block;
   margin: auto;
   margin-top: 37vh;
-}
-
-.pro-sidebar{
-  height: 100vh;
-  color: white;
-  min-width: unset;
-  width: unset;
-}
-
-.pro-icon-wrapper{
-  background-color: #32465A !important;
-}
-
-.pro-sidebar-inner{
-  background: #0C6E8E !important;
 }
 
 .barChart{

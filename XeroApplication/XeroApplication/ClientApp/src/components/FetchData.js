@@ -1,10 +1,23 @@
-import React, { Component,PureComponent,ReactDOM} from 'react';
-import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import React, { Component} from 'react';
+import * as ReactDOM from "react-dom";
 import { FaGitter, FaChartBar, FaRegFileAlt,FaHandHoldingUsd,FaFileInvoiceDollar } from 'react-icons/fa';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart
 } from 'recharts';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import AppBar from '@material-ui/core/AppBar';
+import { Collapse, Container, Navbar, NavbarBrand } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { LoginMenu } from './api-authorization/LoginMenu';
+import './NavMenu.css';
 
 const views =  {
   "all": 0,
@@ -14,8 +27,33 @@ const views =  {
   "transactions":4
 }
 
-export class FetchData extends Component {
-  static displayName = FetchData.name;
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}));
+
+export class DashContent extends Component {
+  static displayName =  DashContent.name;
 
   constructor(props) {
     super(props);
@@ -27,7 +65,7 @@ export class FetchData extends Component {
       forecasts: [],  
       loading: true, 
       n:10,
-      view: views.all
+      view: props.show
     };
     this.gettoken = { 
       data: [], 
@@ -37,14 +75,26 @@ export class FetchData extends Component {
       data: [],
       loading: true 
     };
-    this.navClick = this.navClick.bind(this);
   }
     
-  navClick() {
-   console.log("clicked")
-  }
 
   componentDidMount() {
+    this.GetLink();
+    this.GetToken();
+    this.GetData();
+  }
+
+  componentWillReceiveProps(newProps){
+    this.state = { 
+      paymentData: [], 
+      transactionData: [], 
+      taxData: [], 
+      invoiceData: [],
+      forecasts: [],  
+      loading: true, 
+      n:10,
+      view: newProps.show
+    };
     this.GetLink();
     this.GetToken();
     this.GetData();
@@ -144,108 +194,93 @@ export class FetchData extends Component {
       },
     ];
     
-    return (
-        <div className="container dasboardContainer">
-          <div className="row">
-            <div className="col-2">
-              <ProSidebar>
-                <Menu iconShape="circle">
-                  <MenuItem icon={<FaChartBar />} onClick={this.onClick}>Dashboard</MenuItem>
-                  <MenuItem icon={<FaGitter />} onClick={console.log("click")}>Invoices</MenuItem>
-                  <MenuItem icon={<FaFileInvoiceDollar />}>Tax Values</MenuItem>
-                  <MenuItem icon={<FaHandHoldingUsd />}>Expenditure</MenuItem>
-                  <MenuItem icon={<FaRegFileAlt />}>Accounts</MenuItem>
-                </Menu>
-              </ProSidebar>
-            </div>
-            <div className="col-10 barChart">
-              <div className="gridContainer">
-                <div className="bar">
-                  <h5 className="graphTitle">Invoices</h5>
-                  <ResponsiveContainer width='90%' height={200}>
-                      <BarChart
-                      data={data}
-                      margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                      }}>
-                        <CartesianGrid/>
-                        <XAxis dataKey="date" stroke="#000000"/>
-                        <YAxis/>
-                        <Tooltip dataKey="date" stroke="#000000"/>
-                        <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
-                        <Bar dataKey="Total" fill="#0C6E8E" />
-                      </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="area">
-                  <h5 className="graphTitle">Tax Values</h5>
-                  <ResponsiveContainer width='90%' height={200}>
-                  <AreaChart
-                    data={dummydata}
-                    margin={{
-                      top: 10, right: 30, left: 0, bottom: 0,
-                    }}
-                  >
-                    <CartesianGrid />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-                  </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="line">
-                <h5 className="graphTitle">Expenditure</h5>
-                <ResponsiveContainer width='90%' height={300}>
-                <LineChart
-                  width={500}
-                  height={300}
-                  data={dummydata}
+   return(
+        <div className="container">
+          <div className="gridContainer">
+            <div className="bar">
+              <h5 className="graphTitle">Invoices</h5>
+              <ResponsiveContainer width='90%' height={200}>
+                  <BarChart
+                  data={data}
                   margin={{
                     top: 5, right: 30, left: 20, bottom: 5,
-                  }}
-                >
-                  <CartesianGrid />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                  <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                </LineChart>
-                </ResponsiveContainer>
-                </div>
-
-                <div className="pie">
-                <h5 className="graphTitle">Accounts</h5>
-                <ResponsiveContainer width='90%' height={200}>
-                <ComposedChart
-                  width={500}
-                  height={400}
-                  data={dummydata}
-                  margin={{
-                    top: 20, right: 80, bottom: 20, left: 20,
-                  }}
-                >
-                <CartesianGrid />
-                  <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
-                  <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
-                  <Tooltip />
-                  <Legend />
-                  <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-                  <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-                  <Line type="monotone" dataKey="uv" stroke="#ff7300" />
-                </ComposedChart>
-                </ResponsiveContainer>
-                </div>
-
-              </div>
+                  }}>
+                    <CartesianGrid/>
+                    <XAxis dataKey="date" stroke="#000000"/>
+                    <YAxis/>
+                    <Tooltip dataKey="date" stroke="#000000"/>
+                    <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
+                    <Bar dataKey="Total" fill="#0C6E8E" />
+                  </BarChart>
+              </ResponsiveContainer>
             </div>
+
+            <div className="area">
+              <h5 className="graphTitle">Tax Values</h5>
+              <ResponsiveContainer width='90%' height={200}>
+              <AreaChart
+                data={dummydata}
+                margin={{
+                  top: 10, right: 30, left: 0, bottom: 0,
+                }}
+              >
+                <CartesianGrid />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+              </AreaChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="line">
+            <h5 className="graphTitle">Expenditure</h5>
+            <ResponsiveContainer width='90%' height={300}>
+            <LineChart
+              width={500}
+              height={300}
+              data={dummydata}
+              margin={{
+                top: 5, right: 30, left: 20, bottom: 5,
+              }}
+            >
+              <CartesianGrid />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            </LineChart>
+            </ResponsiveContainer>
+            </div>
+
+            <div className="pie">
+            <h5 className="graphTitle">Accounts</h5>
+            <ResponsiveContainer width='90%' height={200}>
+            <ComposedChart
+              width={500}
+              height={400}
+              data={dummydata}
+              margin={{
+                top: 20, right: 80, bottom: 20, left: 20,
+              }}
+            >
+            <CartesianGrid />
+              <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
+              <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
+              <Tooltip />
+              <Legend />
+              <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
+              <Bar dataKey="pv" barSize={20} fill="#413ea0" />
+              <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+            </ComposedChart>
+            </ResponsiveContainer>
           </div>
-        </div>
-    );
+
+         </div>
+      </div>
+   );
   }
   
   render() {
@@ -257,26 +292,107 @@ export class FetchData extends Component {
       case 0:
         if(srted){
             let newData = srted.slice(0,n);
-            contents = FetchData.draw(newData);
+            contents =  DashContent.draw(newData);
+            return(
+              <div>
+               {contents}
+              </div>  
+            );
         }else{
-            contents = FetchData.draw(invoiceData.Invoices);
+            contents =  DashContent.draw(invoiceData.Invoices);
+            return(
+              <div>
+               {contents}
+              </div>  
+            );
         }
-        return contents;
 
       case 1:
-          contents="Test Case"
-          return contents;  
-     
+          contents="Test Case" 
+          return(
+            <div>
+             {contents}
+            </div>  
+          );
+
       default:
-        contents="Test Case"
-        return contents;
+        contents="Test Case" 
+        return(
+          <div>
+           {contents}
+          </div>  
+        );
     }
-
-    return(
-      <div>
-        {contents}
-      </div>  
-    );
-
   }
 }
+
+export function FetchData() {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 nav-brand" light>
+          <Container>
+              <NavbarBrand tag={Link} to="/">Xero Ninja</NavbarBrand>
+                <ul className="navbar-nav flex-grow">
+                  <LoginMenu/>
+                </ul>
+          </Container>
+        </Navbar>
+      </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <List>
+              <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.all}/>, document.querySelector('#mainStuff'))} >
+                <ListItemIcon>
+                  <FaChartBar />
+                </ListItemIcon>
+                <ListItemText primary={"Dashboard"} />
+              </ListItem>
+
+              <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.invoices}/>, document.querySelector('#mainStuff'))}>
+                <ListItemIcon>
+                 <FaGitter />
+                </ListItemIcon>
+                <ListItemText primary={"Invoices"} />
+              </ListItem>
+
+              <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.taxes}/>, document.querySelector('#mainStuff'))}>
+                <ListItemIcon>
+                  <FaFileInvoiceDollar />
+                </ListItemIcon>
+                <ListItemText primary={"Tax Values"} />
+              </ListItem>
+
+              <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.payments}/>, document.querySelector('#mainStuff'))}>
+                <ListItemIcon>
+                 <FaHandHoldingUsd />
+                </ListItemIcon>
+                <ListItemText primary={"Payments"} />
+              </ListItem>
+
+              <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.transactions}/>, document.querySelector('#mainStuff'))}>
+                <ListItemIcon>
+                 <FaRegFileAlt />
+                </ListItemIcon>
+                <ListItemText primary={"Transactions"} />
+              </ListItem>
+          </List>
+        </div>
+      </Drawer>
+      <main className={classes.content} id={"mainStuff"}>
+        <DashContent show={views.all}/>
+      </main>
+    </div>
+  );
+}
+
