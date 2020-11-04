@@ -35,18 +35,8 @@ export class DashContent extends Component {
   
     componentWillReceiveProps(newProps){
       this.setState( { 
-        paymentData: [], 
-        transactionData: [], 
-        taxData: [], 
-        invoiceData: [],
-        forecasts: [],  
-        loading: true, 
-        n:10,
         view: newProps.show
       });
-      this.GetLink();
-      this.GetToken();
-      this.GetData();
     }
   
     GetLink()
@@ -115,13 +105,7 @@ export class DashContent extends Component {
           this.setState({ taxData: taxes, loading:false});
         });
     }
-  
-  
-    static draw(data){
-      
-    
-    }
-    
+
     render() {
       const {invoiceData,n,view} = this.state;
       let srted = invoiceData.Invoices;

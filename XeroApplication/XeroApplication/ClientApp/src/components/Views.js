@@ -162,7 +162,7 @@ export function Invoices(data) {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <h5 className="graphTitle">Invoices</h5>
-                        <ResponsiveContainer width='90%' height={400}>
+                        <ResponsiveContainer width='100%' height={400}>
                             <BarChart
                             data={data}
                             margin={{
@@ -188,6 +188,7 @@ export function Invoices(data) {
                                     <TableCell align="right">Profit</TableCell>
                                     <TableCell align="right">Exports</TableCell>
                                     <TableCell align="right">Projected</TableCell>
+                                    <TableCell align="right">Actual</TableCell>
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
