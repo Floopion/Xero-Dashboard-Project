@@ -11,7 +11,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-
+import { FaGitter, FaChartBar, FaRegFileAlt,FaHandHoldingUsd,FaFileInvoiceDollar } from 'react-icons/fa';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
 
 const classes = makeStyles((theme) => ({
     root: {
@@ -55,94 +58,154 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
 
      return(
         <div className={classes.root}>
+           
             <Grid container spacing={3}>
                 <Grid item xs={6}>
-                    <Paper className={classes.paper}>
-                        <ResponsiveContainer width='100%' height={300}>
-                            <BarChart
-                            data={invoiceData}
-                            margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                            }}>
-                            <CartesianGrid/>
-                            <XAxis dataKey="DateString" stroke="#000000"/>
-                            <YAxis dataKey="Total" stroke="#000000" tickFormatter={"$"+this}/>
-                            <Tooltip dataKey="Date" stroke="#000000"/>
-                            <Legend width={170} wrapperStyle={{Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} position="insideBottom" />
-                            <Bar name="Invoice Total ($)" dataKey="Total" fill="#0C6E8E"/>
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </Paper>
+                    <Card className={classes.root}>
+                        <CardHeader
+                            avatar={
+                                <FaGitter />
+                            }
+                            title="Latest 10 Invoices"
+                        />
+                        <CardContent>
+                                <ResponsiveContainer width='100%' height={300}>
+                                    <BarChart
+                                    data={invoiceData}
+                                    margin={{
+                                    top: 5, right: 30, left: 20, bottom: 5,
+                                    }}>
+                                    <CartesianGrid/>
+                                    <XAxis dataKey="Contact.Name" stroke="#000000" />
+                                    <YAxis dataKey="Total" stroke="#000000" label={{ value: 'Total Spent', angle: -90, position: 'insideLeft' }}/>
+                                    <Tooltip dataKey="Date" stroke="#000000"/>
+                                    <Legend width={170} wrapperStyle={{Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} position="insideBottom" />
+                                    <Bar name="Invoice Total ($)" dataKey="Total" fill="#0C6E8E"/>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
                 </Grid>
+
+
                 <Grid item xs={6}>
-                    <Paper className={classes.paper}>
+                    <Card className={classes.root}>
+                        <CardHeader
+                            avatar={
+                                <FaRegFileAlt />
+                            }
+                            title="Expenditure (Dollars)"
+                        />
+                        <CardContent>
+                            <ResponsiveContainer width='100%' height={300}>
+                                <AreaChart
+                                data={transData}
+                                margin={{
+                                    top: 10, right: 30, left: 0, bottom: 0,
+                                }}
+                                >
+                                <CartesianGrid />
+                                <XAxis dataKey="Contact.Name" name="Contact Name"  />
+                                <YAxis  dataKey="Total" name="Total Expediture ($)"/>
+                                <Tooltip dataKey="Date" stroke="#000000" />
+                                <Area type="monotone" dataKey="Total" stroke="#32465A" fill="#0C6E8E" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+
+                <Grid item xs={6}>
+                    <Card className={classes.root}>
+                        <CardHeader
+                            avatar={
+                                <FaFileInvoiceDollar />
+                            }
+                            title="Total Taxed"
+                        />
+                        <CardContent>
+                            <ResponsiveContainer width='100%' height={300}>
+                                <LineChart
+                                    width={500}
+                                    height={300}
+                                    data={dummydata}
+                                    margin={{
+                                    top: 5, right: 30, left: 20, bottom: 5,
+                                    }}
+                                >
+                                    <CartesianGrid />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Line type="monotone" dataKey="pv" stroke="#32465A" activeDot={{ r: 8 }} />
+                                    <Line type="monotone" dataKey="uv" stroke="#32465A" />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+
+
+                <Grid item xs={6}>
+                    <Card className={classes.root}>
+                        <CardHeader
+                            avatar={
+                                <FaHandHoldingUsd />
+                            }
+                            title="Latest Payments"
+                        />
+                        <CardContent>
                         <ResponsiveContainer width='100%' height={300}>
-                            <AreaChart
-                            data={transData}
-                            margin={{
-                                top: 10, right: 30, left: 0, bottom: 0,
-                            }}
+                            <ComposedChart
+                                width={500}
+                                height={400}
+                                data={dummydata}
+                                margin={{
+                                top: 20, right: 80, bottom: 20, left: 20,
+                                }}
                             >
                             <CartesianGrid />
-                            <XAxis dataKey="Total" />
-                            <YAxis />
-                            <Tooltip />
-                            <Area type="monotone" dataKey="Total" stroke="#8884d8" fill="#8884d8" />
-                            </AreaChart>
+                                <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
+                                <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
+                                <Tooltip />
+                                <Legend />
+                                <Area type="monotone" dataKey="amt" fill="#32465A" stroke="#32465A" />
+                                <Bar dataKey="pv" barSize={20} fill="#32465A" />
+                                <Line type="monotone" dataKey="uv" stroke="#32465A" />
+                            </ComposedChart>
                         </ResponsiveContainer>
-                    </Paper>
+                        </CardContent>
+                    </Card>
                 </Grid>
-                <Grid item xs={6}>
-                <Paper className={classes.paper}>
-                    <ResponsiveContainer width='100%' height={300}>
-                        <LineChart
-                            width={500}
-                            height={300}
-                            data={dummydata}
-                            margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </Paper>
-                </Grid>
-                <Grid item xs={6}>
-                <Paper className={classes.paper}>
-                    <ResponsiveContainer width='100%' height={300}>
-                        <ComposedChart
-                            width={500}
-                            height={400}
-                            data={dummydata}
-                            margin={{
-                            top: 20, right: 80, bottom: 20, left: 20,
-                            }}
-                        >
-                        <CartesianGrid />
-                            <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
-                            <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
-                            <Tooltip />
-                            <Legend />
-                            <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-                            <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-                            <Line type="monotone" dataKey="uv" stroke="#ff7300" />
-                        </ComposedChart>
-                    </ResponsiveContainer>
-                </Paper>
-                </Grid>
+
             </Grid>
         </div>
      );
 }
-
+ 
 export function Invoices(data) {
+    
+    function DateFormat(dateInput){
+        let  date = new Date(dateInput);
+        let  year = date.getFullYear();
+        let  month = date.getMonth()+1;
+        let  dt = date.getDate();
+         
+         if (dt < 10) {
+           dt = '0' + dt;
+         }
+         if (month < 10) {
+           month = '0' + month;
+         }
+         
+         let dateString = dt+'-' + month + '-'+year;
+     
+         return dateString;
+     }
+ 
     if (data){
         return (
             <div className={classes.root}>
@@ -188,7 +251,7 @@ export function Invoices(data) {
                                         <TableCell component="th" scope="row">
                                             {data.Contact.Name}
                                         </TableCell>
-                                        <TableCell align="right">{data.DueDateString}</TableCell>
+                                        <TableCell align="right">{DateFormat(data.DueDateString)}</TableCell>
                                         <TableCell align="right">{data.CurrencyCode}</TableCell>
                                         <TableCell align="right">{data.Type}</TableCell>
                                         <TableCell align="right">${data.AmountDue}</TableCell>
