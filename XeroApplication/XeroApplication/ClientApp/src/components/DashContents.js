@@ -110,7 +110,6 @@ export class DashContent extends Component {
       const {invoiceData,n,view} = this.state;
       let srted = invoiceData.Invoices;
       let contents;
-      
       switch(view){
         case 0:
           if(srted){

@@ -52,7 +52,7 @@ const dummydata = [
 ];
 
 export function AllInfo(data) {
- 
+
      return(
         <div className={classes.root}>
             <Grid container spacing={3}>
@@ -65,11 +65,11 @@ export function AllInfo(data) {
                             top: 5, right: 30, left: 20, bottom: 5,
                             }}>
                             <CartesianGrid/>
-                            <XAxis dataKey="date" stroke="#000000"/>
-                            <YAxis/>
-                            <Tooltip dataKey="date" stroke="#000000"/>
-                            <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
-                            <Bar dataKey="Total" fill="#0C6E8E" />
+                            <XAxis dataKey="DateString" stroke="#000000"/>
+                            <YAxis dataKey="Total" stroke="#000000" tickFormatter={"$"+this}/>
+                            <Tooltip dataKey="Date" stroke="#000000"/>
+                            <Legend width={170} wrapperStyle={{Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} position="insideBottom" />
+                            <Bar name="Invoice Total ($)" dataKey="Total" fill="#0C6E8E"/>
                             </BarChart>
                         </ResponsiveContainer>
                     </Paper>
@@ -143,74 +143,69 @@ export function AllInfo(data) {
 }
 
 export function Invoices(data) {
-
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
-    }
-      
-    const rows = [
-    createData('The Warehouse', 159, 6.0, 24, 4.0),
-    createData('Pak n Save', 237, 9.0, 37, 4.3),
-    createData('New World', 262, 16.0, 24, 6.0),
-    createData('Countdown', 305, 3.7, 67, 4.3),
-    createData('Flight Center', 356, 16.0, 49, 3.9),
-    ];
-
-    return (
-        <div className={classes.root}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                        <h5 className="graphTitle">Invoices</h5>
-                        <ResponsiveContainer width='100%' height={400}>
-                            <BarChart
-                            data={data}
-                            margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                            }}>
-                            <CartesianGrid/>
-                            <XAxis dataKey="date" stroke="#000000"/>
-                            <YAxis/>
-                            <Tooltip dataKey="date" stroke="#000000"/>
-                            <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
-                            <Bar dataKey="Total" fill="#0C6E8E" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                        <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                <TableRow>
-                                    <TableCell>Company</TableCell>
-                                    <TableCell align="right">Profit</TableCell>
-                                    <TableCell align="right">Exports</TableCell>
-                                    <TableCell align="right">Projected</TableCell>
-                                    <TableCell align="right">Actual</TableCell>
-                                </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow key={row.name}>
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">${row.calories}</TableCell>
-                                    <TableCell align="right">${row.fat}</TableCell>
-                                    <TableCell align="right">${row.carbs}</TableCell>
-                                    <TableCell align="right">${row.protein}</TableCell>
+    if (data){
+        return (
+            <div className={classes.root}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <h5 className="graphTitle">All Invoices</h5>
+                            <ResponsiveContainer width='100%' height={400}>
+                                <BarChart
+                                data={data}
+                                margin={{
+                                top: 5, right: 30, left: 20, bottom: 5,
+                                }}>
+                                <CartesianGrid/>
+                                <XAxis dataKey="date" stroke="#000000"/>
+                                <YAxis/>
+                                <Tooltip dataKey="date" stroke="#000000"/>
+                                <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
+                                <Bar dataKey="Total" fill="#0C6E8E" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <TableContainer component={Paper}>
+                                <Table className={classes.table} aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>Contact Name</TableCell>
+                                        <TableCell align="right">Due Date</TableCell>
+                                        <TableCell align="right">Currency</TableCell>
+                                        <TableCell align="right">Type</TableCell>
+                                        <TableCell align="right">AmountDue</TableCell>
+                                        <TableCell align="right">AmountPaid</TableCell>
+                                        <TableCell align="right">Total</TableCell>
+                                        <TableCell align="right">Status</TableCell>
                                     </TableRow>
-                                ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>    
-                    </Paper>
+                                    </TableHead>
+                                    <TableBody>
+                                    {data.map((data) => (
+                                        <TableRow key={data.InvoiceID}>
+                                        <TableCell component="th" scope="row">
+                                            {data.Contact.Name}
+                                        </TableCell>
+                                        <TableCell align="right">{data.DueDateString}</TableCell>
+                                        <TableCell align="right">{data.CurrencyCode}</TableCell>
+                                        <TableCell align="right">{data.Type}</TableCell>
+                                        <TableCell align="right">${data.AmountDue}</TableCell>
+                                        <TableCell align="right">${data.AmountPaid}</TableCell>
+                                        <TableCell align="right">${data.Total}</TableCell>
+                                        <TableCell align="right">{data.Status}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>    
+                        </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </div>
-    );
+            </div>
+        );
+    }
 }
 
 export function TaxValues(data) {
