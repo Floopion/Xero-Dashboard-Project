@@ -51,7 +51,7 @@ const dummydata = [
     },
 ];
 
-export function AllInfo(data) {
+export function AllInfo(invoiceData,payData,taxData,transData) {
 
      return(
         <div className={classes.root}>
@@ -60,7 +60,7 @@ export function AllInfo(data) {
                     <Paper className={classes.paper}>
                         <ResponsiveContainer width='100%' height={300}>
                             <BarChart
-                            data={data}
+                            data={invoiceData}
                             margin={{
                             top: 5, right: 30, left: 20, bottom: 5,
                             }}>
@@ -78,16 +78,16 @@ export function AllInfo(data) {
                     <Paper className={classes.paper}>
                         <ResponsiveContainer width='100%' height={300}>
                             <AreaChart
-                            data={dummydata}
+                            data={transData}
                             margin={{
                                 top: 10, right: 30, left: 0, bottom: 0,
                             }}
                             >
                             <CartesianGrid />
-                            <XAxis dataKey="name" />
+                            <XAxis dataKey="Total" />
                             <YAxis />
                             <Tooltip />
-                            <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+                            <Area type="monotone" dataKey="Total" stroke="#8884d8" fill="#8884d8" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </Paper>
@@ -160,8 +160,8 @@ export function Invoices(data) {
                                 <XAxis dataKey="date" stroke="#000000"/>
                                 <YAxis/>
                                 <Tooltip dataKey="date" stroke="#000000"/>
-                                <Legend width={100} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
-                                <Bar dataKey="Total" fill="#0C6E8E" />
+                                <Legend width={170} wrapperStyle={{left:600, Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} />
+                                <Bar dataKey="Total" fill="#0C6E8E" name="Invoice Total ($)" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </Paper>

@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 import {AllInfo,Invoices,TaxValues,Payments,Transactions} from './Views'
+import { Container } from '@material-ui/core';
 
 
 export class DashContent extends Component {
@@ -107,34 +108,44 @@ export class DashContent extends Component {
     }
 
     render() {
-      const {invoiceData,n,view} = this.state;
-      let srted = invoiceData.Invoices;
+      const {invoiceData,paymentData,transactionData,taxData,n,view} = this.state;
       let contents;
-      switch(view){
-        case 0:
-          if(srted){
-              let newData = srted.slice(0,n);
-              contents =  AllInfo(newData);
-          }else{
-              contents = AllInfo(invoiceData.Invoices);
-          }
-          break;
-        case 1:
+      
+      let iloaded = invoiceData.Invoices;
+      let ploaded = paymentData.Payments;
+      let tloaded = taxData.TaxRates;
+      let trloaded = transactionData.BankTransactions;
+
+      if(iloaded && ploaded && tloaded && trloaded ){
+       
+        let isrted = iloaded.slice(0,n);
+        let psrted = ploaded.slice(0,n);
+        let tsrted = tloaded.slice(0,n);
+        let trsrted = trloaded.slice(0,n);
+       
+        switch(view){
+          case 0:
+            contents =  AllInfo(isrted,psrted,tsrted,trsrted);
+            break;
+          case 1:
             contents =  Invoices(invoiceData.Invoices);
             break;
-        case 2:
+          case 2:
             contents =  TaxValues(invoiceData.Invoices); 
             break;
-        case 3:
+          case 3:
             contents =  Payments(invoiceData.Invoices);
             break;
-        case 4:
-           contents =  Transactions(invoiceData.Invoices); 
-           break;
-        default:
+          case 4:
+            contents =  Transactions(invoiceData.Invoices); 
+            break;
+          default:
             contents = "Oops, Something went wrong. Please reload and try again!";
-        break;
-      }
+          break;
+        }
+      }else{
+        contents = <Container><img className="ajax-loader" src={process.env.PUBLIC_URL + '/img/ajax-loader.gif'} /><p>Loading Dashboard</p></Container>
+      } 
 
       return(
         <div>
