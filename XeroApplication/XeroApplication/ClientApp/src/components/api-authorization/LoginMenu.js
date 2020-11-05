@@ -49,9 +49,9 @@ export class LoginMenu extends Component {
             <NavItem>
                 <NavLink tag={Link} className="text-light" to={profilePath}>Hello {userName}</NavLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
                 <NavLink tag={Link} className="btn btn-outline-light" to="/load-data">My Dashboard</NavLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
                 <NavLink tag={Link} className="btn btn-outline-light" to={logoutPath}>Logout</NavLink>
             </NavItem>
