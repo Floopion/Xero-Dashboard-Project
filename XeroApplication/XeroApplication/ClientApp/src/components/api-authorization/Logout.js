@@ -3,6 +3,7 @@ import { Component } from 'react';
 import authService from './AuthorizeService';
 import { AuthenticationResultStatus } from './AuthorizeService';
 import { QueryParameterNames, LogoutActions, ApplicationPaths } from './ApiAuthorizationConstants';
+import { Container } from '@material-ui/core';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -48,16 +49,38 @@ export class Logout extends Component {
             return <div></div>
         }
         if (!!message) {
-            return (<div>{message}</div>);
+            return (
+                <div>
+                <Container>
+                    <p className="ajax-loader">{message}</p>
+                </Container>
+                 </div>);
         } else {
             const action = this.props.action;
             switch (action) {
                 case LogoutActions.Logout:
-                    return (<div>Processing logout</div>);
+                    return (
+                    <div>
+                    <Container>
+                        <img className="ajax-loader" src={process.env.PUBLIC_URL + '/img/ajax-loader.gif'} />
+                        <p>Processing logout</p>
+                    </Container>
+                    </div>);
                 case LogoutActions.LogoutCallback:
-                    return (<div>Processing logout callback</div>);
+                    return (
+                        <div>
+                        <Container>
+                            <img className="ajax-loader" src={process.env.PUBLIC_URL + '/img/ajax-loader.gif'} />
+                            <p>Processing logout</p>
+                        </Container>
+                        </div>);
                 case LogoutActions.LoggedOut:
-                    return (<div>{message}</div>);
+                    return (
+                    <div>
+                    <Container>
+                        <p className="ajax-loader">{message}</p>
+                    </Container>
+                     </div>);
                 default:
                     throw new Error(`Invalid action '${action}'`);
             }
