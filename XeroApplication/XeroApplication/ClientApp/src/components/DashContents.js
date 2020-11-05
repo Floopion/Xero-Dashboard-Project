@@ -119,7 +119,7 @@ export class DashContent extends Component {
       if(iloaded && ploaded && tloaded && trloaded ){
        
         let isrted = iloaded.slice(0,n);
-        let psrted = ploaded.slice(0,n);
+        let psrted = ploaded.slice(0,5);
         let tsrted = tloaded.slice(0,n);
         let trsrted = trloaded.slice(0,n);
        

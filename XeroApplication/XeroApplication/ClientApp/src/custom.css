@@ -99,7 +99,7 @@ body{
 
 .container-fluid {
   min-height: 100vh;
-  background-image: url(/img/office.png);
+  background-image: url(/img/office2.png);
   background-size: cover;
   position: relative;
 }
@@ -149,7 +149,7 @@ body{
   color:#fff
 }
 .login-link:hover, .login-link:active {
-  color: #333;
+  color: #0366d6;
 }
 .login p {
   margin-top: 10px;

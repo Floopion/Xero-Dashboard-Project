@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { PureComponent} from 'react';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart
   } from 'recharts';
@@ -56,39 +56,25 @@ const dummydata = [
 
 export function AllInfo(invoiceData,payData,taxData,transData) {
 
+    class CustomizedAxisTick extends PureComponent {
+        render() {
+          const {
+            x, y, stroke, payload,
+          } = this.props;
+      
+          return (
+            <g transform={`translate(${x},${y})`}>
+              <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+            </g>
+          );
+        }
+      }
+
      return(
         <div className={classes.root}>
-           
             <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <Card className={classes.root}>
-                        <CardHeader
-                            avatar={
-                                <FaGitter />
-                            }
-                            title="Latest 10 Invoices"
-                        />
-                        <CardContent>
-                                <ResponsiveContainer width='100%' height={300}>
-                                    <BarChart
-                                    data={invoiceData}
-                                    margin={{
-                                    top: 5, right: 30, left: 20, bottom: 5,
-                                    }}>
-                                    <CartesianGrid/>
-                                    <XAxis dataKey="Contact.Name" stroke="#000000" />
-                                    <YAxis dataKey="Total" stroke="#000000" label={{ value: 'Total Spent', angle: -90, position: 'insideLeft' }}/>
-                                    <Tooltip dataKey="Date" stroke="#000000"/>
-                                    <Legend width={170} wrapperStyle={{Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} position="insideBottom" />
-                                    <Bar name="Invoice Total ($)" dataKey="Total" fill="#0C6E8E"/>
-                                    </BarChart>
-                                </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
-                </Grid>
 
-
-                <Grid item xs={6}>
+            <Grid item xs={6}>
                     <Card className={classes.root}>
                         <CardHeader
                             avatar={
@@ -97,20 +83,57 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                             title="Expenditure (Dollars)"
                         />
                         <CardContent>
-                            <ResponsiveContainer width='100%' height={300}>
+                            <ResponsiveContainer width='100%' height={321}>
                                 <AreaChart
                                 data={transData}
                                 margin={{
-                                    top: 10, right: 30, left: 0, bottom: 0,
+                                    top: 0, right: 30, left: 0, bottom: 90,
                                 }}
                                 >
                                 <CartesianGrid />
-                                <XAxis dataKey="Contact.Name" name="Contact Name"  />
+                                <XAxis interval={0} dataKey="Contact.Name" name="Contact Name" tick={<CustomizedAxisTick/>}  />
                                 <YAxis  dataKey="Total" name="Total Expediture ($)"/>
                                 <Tooltip dataKey="Date" stroke="#000000" />
                                 <Area type="monotone" dataKey="Total" stroke="#32465A" fill="#0C6E8E" />
                                 </AreaChart>
                             </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Card className={classes.root}>
+                        <CardHeader
+                            avatar={
+                                <FaHandHoldingUsd />
+                            }
+                            title="Latest Payments"
+                        />
+                        <CardContent>
+                            <TableContainer component={Paper}>
+                                <Table className={classes.table} aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>Invoice Number</TableCell>
+                                        <TableCell align="right">Payment Type</TableCell>
+                                        <TableCell align="right">Ammount</TableCell>
+                                        <TableCell align="right">Currency</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {payData.map((data) => (
+                                        <TableRow key={data.PaymentID}>
+                                        <TableCell component="th" scope="row">
+                                            {data.Invoice.InvoiceNumber}
+                                        </TableCell>
+                                        <TableCell align="right">{data.PaymentType}</TableCell>
+                                        <TableCell align="right">${data.Amount}</TableCell>
+                                        <TableCell align="right">{data.Invoice.CurrencyCode}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>    
                         </CardContent>
                     </Card>
                 </Grid>
@@ -148,35 +171,29 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                 </Grid>
 
 
-
                 <Grid item xs={6}>
                     <Card className={classes.root}>
                         <CardHeader
                             avatar={
-                                <FaHandHoldingUsd />
+                                <FaGitter />
                             }
-                            title="Latest Payments"
+                            title="Latest Invoices"
                         />
                         <CardContent>
-                        <ResponsiveContainer width='100%' height={300}>
-                            <ComposedChart
-                                width={500}
-                                height={400}
-                                data={dummydata}
-                                margin={{
-                                top: 20, right: 80, bottom: 20, left: 20,
-                                }}
-                            >
-                            <CartesianGrid />
-                                <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} />
-                                <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
-                                <Tooltip />
-                                <Legend />
-                                <Area type="monotone" dataKey="amt" fill="#32465A" stroke="#32465A" />
-                                <Bar dataKey="pv" barSize={20} fill="#32465A" />
-                                <Line type="monotone" dataKey="uv" stroke="#32465A" />
-                            </ComposedChart>
-                        </ResponsiveContainer>
+                                <ResponsiveContainer width='100%' height={300}>
+                                    <BarChart
+                                    data={invoiceData}
+                                    margin={{
+                                    top: 0, right: 30, left: 20, bottom: 50,
+                                    }}>
+                                    <CartesianGrid />
+                                    <XAxis interval={0} dataKey="Contact.Name" stroke="#000000" tick={<CustomizedAxisTick/>} />
+                                    <YAxis dataKey="Total" stroke="#000000" label={{ value: 'Total Spent', angle: -90, position: 'insideLeft' }}/>
+                                    <Tooltip dataKey="Date" stroke="#000000"/>
+                                    {/* <Legend width={170} wrapperStyle={{Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} position="insideBottom" /> */}
+                                    <Bar name="Invoice Total ($)" dataKey="Total" fill="#0C6E8E"/>
+                                    </BarChart>
+                                </ResponsiveContainer>
                         </CardContent>
                     </Card>
                 </Grid>
@@ -235,7 +252,7 @@ export function Invoices(data) {
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableHead>
                                     <TableRow>
-                                        <TableCell>Contact Name</TableCell>
+                                        <TableCell>PaymentType</TableCell>
                                         <TableCell align="right">Due Date</TableCell>
                                         <TableCell align="right">Currency</TableCell>
                                         <TableCell align="right">Type</TableCell>
