@@ -1,6 +1,6 @@
 import React, { PureComponent} from 'react';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,ResponsiveContainer, AreaChart, Area, ComposedChart, Line, LineChart, PieChart, Pie, Sector, Cell,
   } from 'recharts';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -30,31 +30,41 @@ const classes = makeStyles((theme) => ({
       },
 }));
 
-const dummydata = [
-    {
-        name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-    },
-    {
-        name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-    },
-    {
-        name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-    },
-    {
-        name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-    },
-    {
-        name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-    },
-    {
-        name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-    },
-    {
-        name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-    },
-];
+const data = [
+    { name: 'Group A', value: 400 },
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 300 },
+    { name: 'Group D', value: 200 },
+  ];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({
+  cx, cy, midAngle, innerRadius, outerRadius, percent, index,
+}) => {
+   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
 
 export function AllInfo(invoiceData,payData,taxData,transData) {
+
+    function Reconciliations(){
+        for (var i = 0; i < invoiceData.length; i++){
+            for (var key in obj){
+              var value = obj[key];
+              document.write("<br> - " + key + ": " + value);
+            }
+          }
+    }
+
 
     class CustomizedAxisTick extends PureComponent {
         render() {
@@ -73,7 +83,6 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
      return(
         <div className={classes.root}>
             <Grid container spacing={3}>
-
             <Grid item xs={6}>
                     <Card className={classes.root}>
                         <CardHeader
@@ -145,26 +154,26 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                             avatar={
                                 <FaFileInvoiceDollar />
                             }
-                            title="Total Taxed"
+                            title="Reconciliations"
                         />
                         <CardContent>
                             <ResponsiveContainer width='100%' height={300}>
-                                <LineChart
-                                    width={500}
-                                    height={300}
-                                    data={dummydata}
-                                    margin={{
-                                    top: 5, right: 30, left: 20, bottom: 5,
-                                    }}
-                                >
-                                    <CartesianGrid />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Line type="monotone" dataKey="pv" stroke="#32465A" activeDot={{ r: 8 }} />
-                                    <Line type="monotone" dataKey="uv" stroke="#32465A" />
-                                </LineChart>
+                                <PieChart width={500} height={500}>
+                                    <Pie
+                                    data={data}
+                                    cx={200}
+                                    cy={200}
+                                    labelLine={false}
+                                    label={renderCustomizedLabel}
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    >
+                                    {
+                                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                    }
+                                    </Pie>
+                                </PieChart>
                             </ResponsiveContainer>
                         </CardContent>
                     </Card>
@@ -190,8 +199,8 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                                     <XAxis interval={0} dataKey="Contact.Name" stroke="#000000" tick={<CustomizedAxisTick/>} />
                                     <YAxis dataKey="Total" stroke="#000000" label={{ value: 'Total Spent', angle: -90, position: 'insideLeft' }}/>
                                     <Tooltip dataKey="Date" stroke="#000000"/>
-                                    {/* <Legend width={170} wrapperStyle={{Color: '#0000000', border: '1px solid #d5d5d5', borderRadius: 3, lineHeight: '40px' }} position="insideBottom" /> */}
-                                    <Bar name="Invoice Total ($)" dataKey="Total" fill="#0C6E8E"/>
+                                    <Bar name="Invoice Total" dataKey="Total" fill="#32465A"/>
+                                    <Bar name="Outdtanding Balance" dataKey="AmountPaid" fill="#0C6E8E"/>
                                     </BarChart>
                                 </ResponsiveContainer>
                         </CardContent>
