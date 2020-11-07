@@ -101,7 +101,7 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                                 >
                                 <CartesianGrid />
                                 <XAxis interval={0} dataKey="Contact.Name" name="Contact Name" tick={<CustomizedAxisTick/>}  />
-                                <YAxis  dataKey="Total" name="Total Expediture ($)"/>
+                                <YAxis  dataKey="Total" name="Total Expenditure ($)"/>
                                 <Tooltip dataKey="Date" stroke="#000000" />
                                 <Area type="monotone" dataKey="Total" stroke="#32465A" fill="#0C6E8E" />
                                 </AreaChart>
@@ -125,7 +125,7 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                                     <TableRow>
                                         <TableCell>Invoice Number</TableCell>
                                         <TableCell align="right">Payment Type</TableCell>
-                                        <TableCell align="right">Ammount</TableCell>
+                                        <TableCell align="right">Amount</TableCell>
                                         <TableCell align="right">Currency</TableCell>
                                     </TableRow>
                                     </TableHead>
@@ -200,7 +200,7 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                                     <YAxis dataKey="Total" stroke="#000000" label={{ value: 'Total Spent', angle: -90, position: 'insideLeft' }}/>
                                     <Tooltip dataKey="Date" stroke="#000000"/>
                                     <Bar name="Invoice Total" dataKey="Total" fill="#32465A"/>
-                                    <Bar name="Outdtanding Balance" dataKey="AmountPaid" fill="#0C6E8E"/>
+                                    <Bar name="Outstanding Balance" dataKey="AmountPaid" fill="#0C6E8E"/>
                                     </BarChart>
                                 </ResponsiveContainer>
                         </CardContent>

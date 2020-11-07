@@ -89,10 +89,6 @@ body{
   margin : 0 auto;
 }
 
-.recharts-legend-wrapper{
-  left: 42% !important;
-}
-
 .graphTitle{
   margin: 10px 0 0 0; 
 }
