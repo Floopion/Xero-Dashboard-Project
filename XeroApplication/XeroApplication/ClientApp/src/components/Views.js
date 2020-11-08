@@ -56,7 +56,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-export function AllInfo(invoiceData,payData,taxData,transData) {
+export function AllInfo(invoiceData,payData,transData) {
 
     let isRecon = 0; 
     let isNotRecon = 0; 
