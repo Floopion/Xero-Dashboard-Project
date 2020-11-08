@@ -119,13 +119,13 @@ export class DashContent extends Component {
             contents =  Invoices(invoiceData.Invoices);
             break;
           case 2:
-            contents =  Payments(invoiceData.Invoices);
+            contents =  Payments(paymentData.Payments);
             break;
           case 3:
             contents =  Transactions(transactionData.BankTransactions); 
             break;
           default:
-            contents = "Oops, Something went wrong. Please reload and try again!";
+            contents = <p>Oops, Something went wrong. Please reload and try again!</p>;
           break;
         }
       }else{

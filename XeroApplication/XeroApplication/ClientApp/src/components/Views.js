@@ -61,32 +61,41 @@ function DateFormat(dateInput){
     let  year = date.getFullYear();
     let  month = date.getMonth()+1;
     let  dt = date.getDate();
-     
-     if (dt < 10) {
-       dt = '0' + dt;
-     }
-     if (month < 10) {
-       month = '0' + month;
-     }
-     
-     let dateString = dt+'-' + month + '-'+year;
- 
-     return dateString;
- }
-
-    class CustomizedAxisTick extends PureComponent {
-        render() {
-            const {
-            x, y, stroke, payload,
-            } = this.props;
-
-            return (
-            <g transform={`translate(${x},${y})`}>
-                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
-            </g>
-            );
-        }
+        
+    if (dt < 10) {
+    dt = '0' + dt;
     }
+    if (month < 10) {
+    month = '0' + month;
+    }
+    
+    let dateString = dt+'-' + month + '-'+year;
+
+    return dateString;
+}
+
+ 
+function recon(data){
+    if(data){
+        return "TRUE";
+    }else{
+        return "FALSE";
+    }
+}
+
+class CustomizedAxisTick extends PureComponent {
+    render() {
+        const {
+        x, y, stroke, payload,
+        } = this.props;
+
+        return (
+        <g transform={`translate(${x},${y})`}>
+            <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+        </g>
+        );
+    }
+}
 
 export function AllInfo(invoiceData,payData,transData) {
 
@@ -314,19 +323,51 @@ export function Invoices(data) {
 }
 
 export function Payments(data) {
-    return (<p>Payments Placeholder</p>);
+    return (
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                        <h5 className="graphTitle">All Payments</h5>
+                        <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="simple table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell>Payment Contact</TableCell>
+                                    <TableCell align="right">Type</TableCell>
+                                    <TableCell align="right">Currency</TableCell>
+                                    <TableCell align="right">Ammount</TableCell>
+                                    <TableCell align="right">Reconciled</TableCell>
+                                    <TableCell align="right">Status</TableCell>
+                                    <TableCell align="right">Reference</TableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {data.map((data) => (
+                                    <TableRow key={data.PaymentID}>
+                                    <TableCell component="th" scope="row">
+                                        {data.Invoice.Contact.Name}
+                                    </TableCell>
+                                    <TableCell align="right">{data.PaymentType}</TableCell>
+                                    <TableCell align="right">{data.Invoice.CurrencyCode}</TableCell>
+                                    <TableCell align="right">${data.BankAmount}</TableCell>
+                                    <TableCell align="right">{recon(data.IsReconciled)}</TableCell>
+                                    <TableCell align="right">{data.Status}</TableCell>
+                                    <TableCell align="right">{data.Reference}</TableCell>
+                                    </TableRow>
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>    
+                    </Paper>
+                </Grid>
+            </Grid>
+        </div>
+    );
 }
 
 export function Transactions(data) {
     
-    function recon(data){
-        if(data){
-            return "TRUE";
-        }else{
-            return "FALSE";
-        }
-    }
-
     if (data){
         return (
             <div className={classes.root}>
