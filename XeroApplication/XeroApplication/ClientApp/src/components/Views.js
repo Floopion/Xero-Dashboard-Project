@@ -56,6 +56,38 @@ const renderCustomizedLabel = ({
   );
 };
 
+function DateFormat(dateInput){
+    let  date = new Date(dateInput);
+    let  year = date.getFullYear();
+    let  month = date.getMonth()+1;
+    let  dt = date.getDate();
+     
+     if (dt < 10) {
+       dt = '0' + dt;
+     }
+     if (month < 10) {
+       month = '0' + month;
+     }
+     
+     let dateString = dt+'-' + month + '-'+year;
+ 
+     return dateString;
+ }
+
+    class CustomizedAxisTick extends PureComponent {
+        render() {
+            const {
+            x, y, stroke, payload,
+            } = this.props;
+
+            return (
+            <g transform={`translate(${x},${y})`}>
+                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+            </g>
+            );
+        }
+    }
+
 export function AllInfo(invoiceData,payData,transData) {
 
     let isRecon = 0; 
@@ -72,20 +104,6 @@ export function AllInfo(invoiceData,payData,transData) {
     reconData[0]['value'] = isRecon;
     reconData[1]['value'] = isNotRecon;
 
-    class CustomizedAxisTick extends PureComponent {
-        render() {
-          const {
-            x, y, stroke, payload,
-          } = this.props;
-      
-          return (
-            <g transform={`translate(${x},${y})`}>
-              <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
-            </g>
-          );
-        }
-      }
-
      return(
         <div className={classes.root}>
             <Grid container spacing={3}>
@@ -95,7 +113,7 @@ export function AllInfo(invoiceData,payData,transData) {
                             avatar={
                                 <FaRegFileAlt />
                             }
-                            title="Employee Expenditure (Dollars)"
+                            title="Expenditure (Dollars)"
                         />
                         <CardContent>
                             <ResponsiveContainer width='100%' height={321}>
@@ -230,24 +248,6 @@ export function AllInfo(invoiceData,payData,transData) {
  
 export function Invoices(data) {
     
-    function DateFormat(dateInput){
-        let  date = new Date(dateInput);
-        let  year = date.getFullYear();
-        let  month = date.getMonth()+1;
-        let  dt = date.getDate();
-         
-         if (dt < 10) {
-           dt = '0' + dt;
-         }
-         if (month < 10) {
-           month = '0' + month;
-         }
-         
-         let dateString = dt+'-' + month + '-'+year;
-     
-         return dateString;
-     }
- 
     if (data){
         return (
             <div className={classes.root}>
@@ -319,20 +319,14 @@ export function Payments(data) {
 
 export function Transactions(data) {
     
-    class CustomizedAxisTick extends PureComponent {
-        render() {
-          const {
-            x, y, stroke, payload,
-          } = this.props;
-      
-          return (
-            <g transform={`translate(${x},${y})`}>
-              <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
-            </g>
-          );
+    function recon(data){
+        if(data){
+            return "TRUE";
+        }else{
+            return "FALSE";
         }
-      }
-    
+    }
+
     if (data){
         return (
             <div className={classes.root}>
@@ -356,34 +350,32 @@ export function Transactions(data) {
                             </ResponsiveContainer>
                         </Paper>
                     </Grid>
-                    {/* <Grid item xs={12}>
+                    <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <TableContainer component={Paper}>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableHead>
                                     <TableRow>
-                                        <TableCell>PaymentType</TableCell>
-                                        <TableCell align="right">Due Date</TableCell>
-                                        <TableCell align="right">Currency</TableCell>
+                                        <TableCell>Contact Name</TableCell>
+                                        <TableCell align="right">Transaction Date</TableCell>
                                         <TableCell align="right">Type</TableCell>
-                                        <TableCell align="right">AmountDue</TableCell>
-                                        <TableCell align="right">AmountPaid</TableCell>
-                                        <TableCell align="right">Total</TableCell>
+                                        <TableCell align="right">Currency</TableCell>
+                                        <TableCell align="right">Ammount</TableCell>
+                                        <TableCell align="right">Reconciled</TableCell>
                                         <TableCell align="right">Status</TableCell>
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
                                     {data.map((data) => (
-                                        <TableRow key={data.InvoiceID}>
+                                        <TableRow key={data.BankTransactionID}>
                                         <TableCell component="th" scope="row">
                                             {data.Contact.Name}
                                         </TableCell>
-                                        <TableCell align="right">{DateFormat(data.DueDateString)}</TableCell>
-                                        <TableCell align="right">{data.CurrencyCode}</TableCell>
+                                        <TableCell align="right">{DateFormat(data.DateString)}</TableCell>
                                         <TableCell align="right">{data.Type}</TableCell>
-                                        <TableCell align="right">${data.AmountDue}</TableCell>
-                                        <TableCell align="right">${data.AmountPaid}</TableCell>
+                                        <TableCell align="right">{data.CurrencyCode}</TableCell>
                                         <TableCell align="right">${data.Total}</TableCell>
+                                        <TableCell align="right">{recon(data.IsReconciled)}</TableCell>
                                         <TableCell align="right">{data.Status}</TableCell>
                                         </TableRow>
                                     ))}
@@ -391,7 +383,7 @@ export function Transactions(data) {
                                 </Table>
                             </TableContainer>    
                         </Paper>
-                    </Grid> */}
+                    </Grid>
                 </Grid>
             </div>
         );
