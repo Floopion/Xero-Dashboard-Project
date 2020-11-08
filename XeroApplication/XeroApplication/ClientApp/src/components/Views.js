@@ -313,14 +313,88 @@ export function Invoices(data) {
     }
 }
 
-export function TaxValues(data) {
-    return (<p>Tax Value Placeholder</p>);
-}
-
 export function Payments(data) {
     return (<p>Payments Placeholder</p>);
 }
 
 export function Transactions(data) {
-    return (<p>Transactions Placeholder</p>);
+    
+    class CustomizedAxisTick extends PureComponent {
+        render() {
+          const {
+            x, y, stroke, payload,
+          } = this.props;
+      
+          return (
+            <g transform={`translate(${x},${y})`}>
+              <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+            </g>
+          );
+        }
+      }
+    
+    if (data){
+        return (
+            <div className={classes.root}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <h5 className="graphTitle">All Transactions</h5>
+                            <ResponsiveContainer width='100%' height={321}>
+                                <AreaChart
+                                data={data}
+                                margin={{
+                                    top: 0, right: 30, left: 0, bottom: 90,
+                                }}
+                                >
+                                <CartesianGrid />
+                                <XAxis interval={0} dataKey="Contact.Name" name="Contact Name" tick={<CustomizedAxisTick/>}  />
+                                <YAxis  dataKey="Total" name="Total Expenditure ($)"/>
+                                <Tooltip dataKey="Date" stroke="#000000" />
+                                <Area type="monotone" dataKey="Total" stroke="#32465A" fill="#0C6E8E" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </Paper>
+                    </Grid>
+                    {/* <Grid item xs={12}>
+                        <Paper className={classes.paper}>
+                            <TableContainer component={Paper}>
+                                <Table className={classes.table} aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>PaymentType</TableCell>
+                                        <TableCell align="right">Due Date</TableCell>
+                                        <TableCell align="right">Currency</TableCell>
+                                        <TableCell align="right">Type</TableCell>
+                                        <TableCell align="right">AmountDue</TableCell>
+                                        <TableCell align="right">AmountPaid</TableCell>
+                                        <TableCell align="right">Total</TableCell>
+                                        <TableCell align="right">Status</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {data.map((data) => (
+                                        <TableRow key={data.InvoiceID}>
+                                        <TableCell component="th" scope="row">
+                                            {data.Contact.Name}
+                                        </TableCell>
+                                        <TableCell align="right">{DateFormat(data.DueDateString)}</TableCell>
+                                        <TableCell align="right">{data.CurrencyCode}</TableCell>
+                                        <TableCell align="right">{data.Type}</TableCell>
+                                        <TableCell align="right">${data.AmountDue}</TableCell>
+                                        <TableCell align="right">${data.AmountPaid}</TableCell>
+                                        <TableCell align="right">${data.Total}</TableCell>
+                                        <TableCell align="right">{data.Status}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>    
+                        </Paper>
+                    </Grid> */}
+                </Grid>
+            </div>
+        );
+    }
 }
+

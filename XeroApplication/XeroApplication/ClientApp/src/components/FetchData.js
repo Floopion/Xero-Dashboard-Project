@@ -23,7 +23,7 @@ const views =  {
   "transactions":3
 }
 
-const drawerWidth = 240;
+const drawerWidth = 230;
 
 const useStyles = makeStyles((theme) => ({
   root: {
