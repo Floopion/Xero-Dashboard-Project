@@ -30,14 +30,16 @@ const classes = makeStyles((theme) => ({
       },
 }));
 
-const data = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
-  ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = {
+    primary: '#0C6E8E',
+    secondary: '#32465A'
+};
+
+const reconData = [
+    { name: 'recon', value: 0, displayName: 'Reconciled', color: COLORS.primary},
+    { name: 'notRecon', value: 0, displayName: 'Reconciled', color: COLORS.secondary },
+  ];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -56,15 +58,19 @@ const renderCustomizedLabel = ({
 
 export function AllInfo(invoiceData,payData,taxData,transData) {
 
-    function Reconciliations(){
-        for (var i = 0; i < invoiceData.length; i++){
-            for (var key in obj){
-              var value = obj[key];
-              document.write("<br> - " + key + ": " + value);
-            }
-          }
+    let isRecon = 0; 
+    let isNotRecon = 0; 
+
+    for (var i = 0; i < transData.length; i++){
+        if(transData[i]['IsReconciled']){
+            isRecon ++;
+        }else{
+            isNotRecon ++;
+        }      
     }
 
+    reconData[0]['value'] = isRecon;
+    reconData[1]['value'] = isNotRecon;
 
     class CustomizedAxisTick extends PureComponent {
         render() {
@@ -159,8 +165,19 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                         <CardContent>
                             <ResponsiveContainer width='100%' height={300}>
                                 <PieChart width={500} height={500}>
+                                <Legend
+                                        payload={
+                                            reconData.map(
+                                            item => ({
+                                                id: item.name,
+                                                type: "square",
+                                                value: `${item.name} (${(item.value * 10).toFixed(0)}%)`,
+                                            })
+                                            )
+                                        }
+                                    />
                                     <Pie
-                                    data={data}
+                                    data={reconData}
                                     cx={200}
                                     cy={200}
                                     labelLine={false}
@@ -170,7 +187,7 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                                     dataKey="value"
                                     >
                                     {
-                                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                                        reconData.map((entry, index) => <Cell key={`cell-${index}`} fill={reconData[index]['color']} />)
                                     }
                                     </Pie>
                                 </PieChart>
