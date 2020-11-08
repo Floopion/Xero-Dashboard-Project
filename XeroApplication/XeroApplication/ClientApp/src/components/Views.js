@@ -38,7 +38,7 @@ const COLORS = {
 
 const reconData = [
     { name: 'recon', value: 0, displayName: 'Reconciled', color: COLORS.primary},
-    { name: 'notRecon', value: 0, displayName: 'Reconciled', color: COLORS.secondary },
+    { name: 'notRecon', value: 0, displayName: 'Unreconciled', color: COLORS.secondary },
   ];
 
 const RADIAN = Math.PI / 180;
@@ -95,7 +95,7 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                             avatar={
                                 <FaRegFileAlt />
                             }
-                            title="Expenditure (Dollars)"
+                            title="Employee Expenditure (Dollars)"
                         />
                         <CardContent>
                             <ResponsiveContainer width='100%' height={321}>
@@ -160,7 +160,7 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                             avatar={
                                 <FaFileInvoiceDollar />
                             }
-                            title="Reconciliations"
+                            title="Bank Transactions"
                         />
                         <CardContent>
                             <ResponsiveContainer width='100%' height={300}>
@@ -171,18 +171,17 @@ export function AllInfo(invoiceData,payData,taxData,transData) {
                                             item => ({
                                                 id: item.name,
                                                 type: "square",
-                                                value: `${item.name} (${(item.value * 10).toFixed(0)}%)`,
+                                                value: `${item.displayName} (${(item.value * 10).toFixed(0)}%)`,
+                                                color: item.color
                                             })
                                             )
                                         }
                                     />
                                     <Pie
                                     data={reconData}
-                                    cx={200}
-                                    cy={200}
                                     labelLine={false}
                                     label={renderCustomizedLabel}
-                                    outerRadius={100}
+                                    outerRadius={123}
                                     fill="#8884d8"
                                     dataKey="value"
                                     >
