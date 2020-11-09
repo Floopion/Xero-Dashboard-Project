@@ -11,7 +11,6 @@ export class DashContent extends Component {
       this.state = { 
         paymentData: [], 
         transactionData: [], 
-        taxData: [], 
         invoiceData: [],
         forecasts: [],  
         loading: true, 
@@ -96,51 +95,37 @@ export class DashContent extends Component {
           this.setState({ paymentData: payments});
         });
   
-      
-      fetch('https://localhost:5001/getTaxRates', {
-        method: 'GET',
-        headers: {"Content-Type": "application/json"}
-      })
-      .then(response => response.json())
-        .then((taxes) => {
-          this.setState({ taxData: taxes, loading:false});
-        });
     }
 
     render() {
-      const {invoiceData,paymentData,transactionData,taxData,n,view} = this.state;
+      const {invoiceData,paymentData,transactionData,n,view} = this.state;
       let contents;
       
       let iloaded = invoiceData.Invoices;
       let ploaded = paymentData.Payments;
-      let tloaded = taxData.TaxRates;
       let trloaded = transactionData.BankTransactions;
 
-      if(iloaded && ploaded && tloaded && trloaded ){
+      if(iloaded && ploaded && trloaded ){
        
         let isrted = iloaded.slice(0,n);
-        let psrted = ploaded.slice(0,n);
-        let tsrted = tloaded.slice(0,n);
+        let psrted = ploaded.slice(0,5);
         let trsrted = trloaded.slice(0,n);
        
         switch(view){
           case 0:
-            contents =  AllInfo(isrted,psrted,tsrted,trsrted);
+            contents =  AllInfo(isrted,psrted,trsrted);
             break;
           case 1:
             contents =  Invoices(invoiceData.Invoices);
             break;
           case 2:
-            contents =  TaxValues(invoiceData.Invoices); 
+            contents =  Payments(paymentData.Payments);
             break;
           case 3:
-            contents =  Payments(invoiceData.Invoices);
-            break;
-          case 4:
-            contents =  Transactions(invoiceData.Invoices); 
+            contents =  Transactions(transactionData.BankTransactions); 
             break;
           default:
-            contents = "Oops, Something went wrong. Please reload and try again!";
+            contents = <p>Oops, Something went wrong. Please reload and try again!</p>;
           break;
         }
       }else{

@@ -19,12 +19,11 @@ import {DashContent}  from './DashContents'
 const views =  {
   "all": 0,
   "invoices":1,
-  "taxes":2,
-  "payments":3,
-  "transactions":4
+  "payments":2,
+  "transactions":3
 }
 
-const drawerWidth = 240;
+const drawerWidth = 230;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,12 +88,6 @@ export function FetchData() {
                 <ListItemText primary={"Invoices"} />
               </ListItem>
 
-              <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.taxes}/>, document.querySelector('#mainStuff'))}>
-                <ListItemIcon>
-                  <FaFileInvoiceDollar />
-                </ListItemIcon>
-                <ListItemText primary={"Tax Values"} />
-              </ListItem>
 
               <ListItem button onClick={()=>ReactDOM.render(<DashContent show={views.payments}/>, document.querySelector('#mainStuff'))}>
                 <ListItemIcon>
