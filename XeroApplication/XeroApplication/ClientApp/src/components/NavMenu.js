@@ -27,7 +27,7 @@ export class NavMenu extends Component {
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 nav-brand" light>
           <Container className={"unsetMax"}>
-            <NavbarBrand tag={Link} to="/">Xero Ninja</NavbarBrand>
+            <NavbarBrand>Xero Ninja</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
