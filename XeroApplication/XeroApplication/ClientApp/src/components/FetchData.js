@@ -57,7 +57,7 @@ export function FetchData() {
       <AppBar position="fixed" className={classes.appBar}>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow mb-3 nav-brand" light>
           <Container className={"unsetMax"}>
-              <NavbarBrand tag={Link} to="/">Xero Ninja</NavbarBrand>
+              <NavbarBrand>Xero Ninja</NavbarBrand>
                 <ul className="navbar-nav flex-grow">
                   <LoginMenu/>
                 </ul>
