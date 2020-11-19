@@ -12,9 +12,9 @@ export class Home extends Component {
               <p>Your Accounts made easy.</p>
             </div>
             <div class="login">
-              <a href="https://localhost:5001/Identity/Account/Register?returnUrl=/authentication/login" class="btn btn-primary btn-lg join-link">Join us</a>
+              <a href="https://studio5.xdashboard.ninja/Identity/Account/Register?returnUrl=/authentication/login" class="btn btn-primary btn-lg join-link">Join us</a>
               <p>Already registered?</p>
-              <a href="https://localhost:5001/authentication/login" class="login-link">Login</a>
+              <a href="https://studio5.xdashboard.ninja/authentication/login" class="login-link">Login</a>
             </div>
         </div>
     );

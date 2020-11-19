@@ -41,7 +41,7 @@ export class DashContent extends Component {
   
     GetLink()
     {
-      fetch('https://localhost:5001/get-link', {
+      fetch('https://studio5.xdashboard.ninja/get-link', {
         method: 'GET',
         headers: {"Content-Type": "application/json"}
     })
@@ -54,7 +54,7 @@ export class DashContent extends Component {
   
     GetToken()
     {
-      fetch('https://localhost:5001/showToken', {
+      fetch('https://studio5.xdashboard.ninja/showToken', {
         method: 'GET',
         headers: {"Content-Type": "application/json"}
       })
@@ -66,7 +66,7 @@ export class DashContent extends Component {
   
     GetData()
     {
-      fetch('https://localhost:5001/getInvoices', {
+      fetch('https://studio5.xdashboard.ninja/getInvoices', {
         method: 'GET',
         headers: {"Content-Type": "application/json"}
       })
@@ -76,7 +76,7 @@ export class DashContent extends Component {
         });
   
       
-      fetch('https://localhost:5001/getBankTransactions', {
+      fetch('https://studio5.xdashboard.ninja/getBankTransactions', {
         method: 'GET',
         headers: {"Content-Type": "application/json"}
       })
@@ -86,7 +86,7 @@ export class DashContent extends Component {
         });
   
       
-      fetch('https://localhost:5001/getPayments', {
+      fetch('https://studio5.xdashboard.ninja/getPayments', {
         method: 'GET',
         headers: {"Content-Type": "application/json"}
       })

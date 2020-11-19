@@ -43,7 +43,7 @@ namespace XeroApplication.Controllers
              clientId: _myXeroLogin.ClientID,
              responseType: "code", //hardcoded authorisation code for now.
              //redirectUri: "https://localhost:5001/oauth",
-             redirectUri: "https://localhost:5001/getData",
+             redirectUri: "https://studio5.xdashboard.ninja/getData",
              scope: "openid profile email files accounting.transactions accounting.transactions.read accounting.reports.read accounting.journals.read accounting.settings accounting.settings.read accounting.contacts accounting.contacts.read accounting.attachments accounting.attachments.read offline_access"
          );
 
@@ -65,7 +65,7 @@ namespace XeroApplication.Controllers
                     Code = code,
                     ClientId = _myXeroLogin.ClientID,
                     ClientSecret = _myXeroLogin.ClientSecret,
-                    RedirectUri = "https://localhost:5001/getData",
+                    RedirectUri = "https://studio5.xdashboard.ninja/getData",
                     Parameters =
                     {
                         { "scope", "openid profile email files accounting.transactions accounting.transactions.read accounting.reports.read accounting.journals.read accounting.settings accounting.settings.read accounting.contacts accounting.contacts.read accounting.attachments accounting.attachments.read offline_access"}
@@ -119,7 +119,7 @@ namespace XeroApplication.Controllers
             holdAllData = jsonthis;     // global variable, this is bad. Will change it later
 
             System.Console.WriteLine("REDIRECTION");
-            return Redirect("https://localhost:5001/fetch-data");
+            return Redirect("https://studio5.xdashboard.ninja/fetch-data");
             // return Content(jsonthis, "application/json");
         
         }
@@ -201,6 +201,14 @@ namespace XeroApplication.Controllers
             else {
                 return Content(holdAllData, "application/json");
             }
+        }
+
+	[HttpGet("/end-session")]
+        public ActionResult EndSession()
+        {
+            Array.Clear(holdAllDataArray, 0, holdAllDataArray.Length);
+
+            return Content("Data Is Cleared", "application/json");
         }
     }
 }

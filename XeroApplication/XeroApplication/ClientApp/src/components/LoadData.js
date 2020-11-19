@@ -5,7 +5,7 @@ export class LoadData extends Component {
 
   constructor(props) {
     super(props);
-    let temper = {status: 404, link: "https://localhost:5001/load-data"};
+    let temper = {status: 404, link: "https://studio5.xdashboard.ninja/load-data"};
     this.state = { forecasts: [],  loading: true };
     this.gettoken = { data: [], loading: true };
     this.getdata = { data: [], loading: true };
@@ -29,7 +29,7 @@ export class LoadData extends Component {
 
   async GetLink()
   {
-    await fetch('https://localhost:5001/get-link', {
+    await fetch('https://studio5.xdashboard.ninja/get-link', {
       method: 'GET',
       headers: {"Content-Type": "application/json"}
   })

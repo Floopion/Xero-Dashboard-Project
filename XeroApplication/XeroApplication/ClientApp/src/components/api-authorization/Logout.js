@@ -40,6 +40,7 @@ export class Logout extends Component {
                 throw new Error(`Invalid action '${action}'`);
         }
 
+	this.removeData();
         this.populateAuthenticationState();
     }
 
@@ -85,6 +86,14 @@ export class Logout extends Component {
                     throw new Error(`Invalid action '${action}'`);
             }
         }
+    }
+
+     removeData()
+    {
+        fetch('https://studio5.xdashboard.ninja/end-session', {
+            method: 'GET',
+            headers: {"Content-Type": "application/json"}
+        });
     }
 
     async logout(returnUrl) {
